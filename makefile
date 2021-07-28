@@ -23,6 +23,9 @@ $(OBJ):obj/%.o:src/%.cpp $(INC)
 $(LSRC):src/%.cpp:src/%.l
 	flex -Ce -o $@ $<
 
+$(LEX):src/%.l:inc/%.hpp
+	script/$(shell basename -s ".l" $@).sh
+
 clean:
 	rm -rf $(OBJ) $(TARGET) $(LSRC)
 

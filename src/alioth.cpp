@@ -29,10 +29,11 @@ int main(int argc, char **argv) {
         auto is = std::ifstream(cmd[0][0].args[0]);
         Lexer lexer(is);
         lexer.ontoken([&](token tk) {
-          if( tk ) {
-            std::cout << "(" << tk.bl << ")" << tk.tx << std::endl;
+          if( tk && tk.id != (int)VT::SPACE ) {
+
+            std::cout << tk.id << "(" << tk.bl << "," << tk.bc << ")" << tk.tx << std::endl;
           }
-          return true;
+          return 0;
         });
         lexer.parse();
       }

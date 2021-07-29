@@ -11,9 +11,9 @@ namespace alioth {
 using token = alex::token;
 
 enum class VT : int {
-/** START DEFS */
+  /** START DEFS */
   $,
-  SPACE /**RULE/(\s|\n)+/ELUR*/, // 空白符
+  SPACE /**RULE/(\s|\n)+/ELUR*/,  /* 空白符 */
   AND /**RULE/and/ELUR*/,
   AS /**RULE/as/ELUR*/,
   BREAK /**RULE/break/ELUR*/,
@@ -38,17 +38,19 @@ enum class VT : int {
   UNIT /**RULE/unit/ELUR*/,
   USE /**RULE/use/ELUR*/,
   XOR /**RULE/xor/ELUR*/,
-  LABEL /**RULE/[a-zA-Z_][a-zA-Z0-9_]* /ELUR*/,
-  COMMA /**RULE/,/ELUR*/, // 逗号
-  COLON /**RULE/:/ELUR*/, // 冒号
-  SEMI /**RULE/;/ELUR*/, // 分号
+  DECIMAL /**RULE/0|[1-9][[:digit:]]* /ELUR*/,
+  ID /**RULE/[[:alpha:]_][[:alnum:]_]* /ELUR*/,
+  COMMA /**RULE/,/ELUR*/,  /* 逗号 */
+  COLON /**RULE/:/ELUR*/,  /* 冒号 */
+  SEMI /**RULE/;/ELUR*/,   /* 分号 */
   OPENSUB /**RULE/\(/ELUR*/,
   CLOSESUB /**RULE/\)/ELUR*/,
   OPENIDX /**RULE/\[/ELUR*/,
   CLOSEIDX /**RULE/\]/ELUR*/,
   OPENBLK /**RULE/\{/ELUR*/,
   CLOSEBLK /**RULE/\}/ELUR*/,
-/** END DEFS */
+  
+  /** END DEFS */
 };
 
 /** 词法分析器 */
@@ -58,13 +60,16 @@ class Lexer {
 
  public:
   Lexer(std::istream& is);
-  Lexer( const Lexer& ) = delete;
-  Lexer( Lexer&& );
+  Lexer(const Lexer&) = delete;
+  Lexer(Lexer&&);
   ~Lexer();
 
   void ontoken(std::function<int(token)>);
 
   int parse();
+
+  static std::string IdName( VT );
+  static std::string IdName( int );
 };
 
 }  // namespace alioth

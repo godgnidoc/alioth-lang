@@ -119,11 +119,11 @@ namespace alioth {
   std::string Lexer::IdName( VT id ) {
     return idname_table[id];
   }
-  std::string Lexer::IdName( int id ) {
-    return IdName((VT)id);
-  }
 
-  
+  std::map<VT,std::string> idname_table = {
+    /** START TABLE */
+    /** END TABLE */
+  };
 }
 
 void gincrement(lexer_impl* impl, const std::string& content ) {
@@ -134,44 +134,3 @@ void gincrement(lexer_impl* impl, const std::string& content ) {
       impl->column += 1;
   }
 }
-
-std::map<alioth::VT,std::string> alioth::idname_table = {
-  /** START TABLE */
-{alioth::VT::SPACE, "SPACE" },  /* 空白符 */
-{alioth::VT::AND, "AND" },
-{alioth::VT::AS, "AS" },
-{alioth::VT::BREAK, "BREAK" },
-{alioth::VT::CLASS, "CLASS" },
-{alioth::VT::CONTINUE, "CONTINUE" },
-{alioth::VT::CONST, "CONST" },
-{alioth::VT::DO, "DO" },
-{alioth::VT::ENUM, "ENUM" },
-{alioth::VT::ELSE, "ELSE" },
-{alioth::VT::FALSE, "FALSE" },
-{alioth::VT::FOR, "FOR" },
-{alioth::VT::IF, "IF" },
-{alioth::VT::INTERFACE, "INTERFACE" },
-{alioth::VT::LET, "LET" },
-{alioth::VT::MODULE, "MODULE" },
-{alioth::VT::NOT, "NOT" },
-{alioth::VT::OR, "OR" },
-{alioth::VT::PUBLIC, "PUBLIC" },
-{alioth::VT::PRIVATE, "PRIVATE" },
-{alioth::VT::PROTECTED, "PROTECTED" },
-{alioth::VT::RETURN, "RETURN" },
-{alioth::VT::UNIT, "UNIT" },
-{alioth::VT::USE, "USE" },
-{alioth::VT::XOR, "XOR" },
-{alioth::VT::DECIMAL, "DECIMAL" },
-{alioth::VT::ID, "ID" },
-{alioth::VT::COMMA, "COMMA" },  /* 逗号 */
-{alioth::VT::COLON, "COLON" },  /* 冒号 */
-{alioth::VT::SEMI, "SEMI" },   /* 分号 */
-{alioth::VT::OPENSUB, "OPENSUB" },
-{alioth::VT::CLOSESUB, "CLOSESUB" },
-{alioth::VT::OPENIDX, "OPENIDX" },
-{alioth::VT::CLOSEIDX, "CLOSEIDX" },
-{alioth::VT::OPENBLK, "OPENBLK" },
-{alioth::VT::CLOSEBLK, "CLOSEBLK" },
-  /** END TABLE */
-  };

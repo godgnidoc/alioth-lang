@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
         lexer.ontoken([&](token tk) {
           if( tk && tk.id != (int)VT::SPACE ) {
 
-            std::cout << tk.id << "(" << tk.bl << "," << tk.bc << ")" << tk.tx << std::endl;
+            std::cout << Lexer::IdName(tk.id) << "(" << tk.bl << "," << tk.bc << ")" << tk.tx << std::endl;
           }
           return 0;
         });

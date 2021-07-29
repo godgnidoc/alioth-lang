@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 
+/** 词法分析器上下文 */
 struct lexer_impl {
   std::function<int(alioth::token)> cb;
   size_t line;
@@ -11,15 +12,19 @@ struct lexer_impl {
   std::istream& is;
 };
 
+/** 根据单词计算偏移量 */
 void gincrement(lexer_impl*, const std::string&);
 
-#define YY_DECL size_t yylex( yyscan_t yyscanner )
+/** 词法分析算返回0表示正常结束，返回非零表示其他情况 */
+#define YY_DECL int yylex( yyscan_t yyscanner )
 
+/** 改写输入操作为读取输入流 */
 #define YY_INPUT( buf, result, max_size ) {\
   yyextra->is.read(buf, max_size);\
   result = yyextra->is.gcount();\
 }
 
+/** 根据当前分析内容构建记号 */
 #define MKTOKEN( id ) ({\
   auto t = alioth::token((int)id);\
   t.tx = std::string(yytext, yyleng);\
@@ -31,6 +36,7 @@ void gincrement(lexer_impl*, const std::string&);
   t;\
 })
 
+/** 向外界报告一个记号并获取指示 */
 #define EMITTOKEN( id ) {\
   auto res = yyextra->cb(MKTOKEN(id));\
   if( res != 0 )\
@@ -53,6 +59,7 @@ class {EMITTOKEN(alioth::VT::CLASS);}
 continue {EMITTOKEN(alioth::VT::CONTINUE);}
 const {EMITTOKEN(alioth::VT::CONST);}
 do {EMITTOKEN(alioth::VT::DO);}
+done {EMITTOKEN(alioth::VT::DONE);}
 enum {EMITTOKEN(alioth::VT::ENUM);}
 else {EMITTOKEN(alioth::VT::ELSE);}
 false {EMITTOKEN(alioth::VT::FALSE);}
@@ -119,11 +126,11 @@ namespace alioth {
   std::string Lexer::IdName( VT id ) {
     return idname_table[id];
   }
+  std::string Lexer::IdName( int id ) {
+    return IdName((VT)id);
+  }
 
-  std::map<VT,std::string> idname_table = {
-    /** START TABLE */
-    /** END TABLE */
-  };
+  
 }
 
 void gincrement(lexer_impl* impl, const std::string& content ) {
@@ -134,3 +141,45 @@ void gincrement(lexer_impl* impl, const std::string& content ) {
       impl->column += 1;
   }
 }
+
+std::map<alioth::VT,std::string> alioth::idname_table = {
+  /** START TABLE */
+{alioth::VT::SPACE, "SPACE" },  /* 空白符 */
+{alioth::VT::AND, "AND" },
+{alioth::VT::AS, "AS" },
+{alioth::VT::BREAK, "BREAK" },
+{alioth::VT::CLASS, "CLASS" },
+{alioth::VT::CONTINUE, "CONTINUE" },
+{alioth::VT::CONST, "CONST" },
+{alioth::VT::DO, "DO" },
+{alioth::VT::DONE, "DONE" },
+{alioth::VT::ENUM, "ENUM" },
+{alioth::VT::ELSE, "ELSE" },
+{alioth::VT::FALSE, "FALSE" },
+{alioth::VT::FOR, "FOR" },
+{alioth::VT::IF, "IF" },
+{alioth::VT::INTERFACE, "INTERFACE" },
+{alioth::VT::LET, "LET" },
+{alioth::VT::MODULE, "MODULE" },
+{alioth::VT::NOT, "NOT" },
+{alioth::VT::OR, "OR" },
+{alioth::VT::PUBLIC, "PUBLIC" },
+{alioth::VT::PRIVATE, "PRIVATE" },
+{alioth::VT::PROTECTED, "PROTECTED" },
+{alioth::VT::RETURN, "RETURN" },
+{alioth::VT::UNIT, "UNIT" },
+{alioth::VT::USE, "USE" },
+{alioth::VT::XOR, "XOR" },
+{alioth::VT::DECIMAL, "DECIMAL" },
+{alioth::VT::ID, "ID" },
+{alioth::VT::COMMA, "COMMA" },  /* 逗号 */
+{alioth::VT::COLON, "COLON" },  /* 冒号 */
+{alioth::VT::SEMI, "SEMI" },   /* 分号 */
+{alioth::VT::OPENSUB, "OPENSUB" },
+{alioth::VT::CLOSESUB, "CLOSESUB" },
+{alioth::VT::OPENIDX, "OPENIDX" },
+{alioth::VT::CLOSEIDX, "CLOSEIDX" },
+{alioth::VT::OPENBLK, "OPENBLK" },
+{alioth::VT::CLOSEBLK, "CLOSEBLK" },
+  /** END TABLE */
+  };

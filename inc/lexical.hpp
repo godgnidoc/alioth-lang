@@ -10,6 +10,7 @@ namespace alioth {
 
 using token = alex::token;
 
+/** 词法记号表 */
 enum class VT : int {
   /** START DEFS */
   $,
@@ -21,6 +22,7 @@ enum class VT : int {
   CONTINUE /**RULE/continue/ELUR*/,
   CONST /**RULE/const/ELUR*/,
   DO /**RULE/do/ELUR*/,
+  DONE /**RULE/done/ELUR*/,
   ENUM /**RULE/enum/ELUR*/,
   ELSE /**RULE/else/ELUR*/,
   FALSE /**RULE/false/ELUR*/,
@@ -65,7 +67,6 @@ class Lexer {
   ~Lexer();
 
   void ontoken(std::function<int(token)>);
-
   int parse();
 
   static std::string IdName( VT );

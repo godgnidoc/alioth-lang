@@ -2,8 +2,8 @@ SHELL = /bin/bash
 
 # Variables used for compiling sources
 INC =$(wildcard inc/*.hpp)
-LEX =$(wildcard src/*.l)
-LSRC =$(LEX:src/%.l=src/%.cpp)
+FLEX =$(wildcard src/*.flex)
+LSRC =$(FLEX:src/%.flex=src/%.cpp)
 CSRC =$(wildcard src/*.cpp)
 SRC =$(shell echo $(CSRC) $(LSRC) | sed "s/\s/\n/g" | sort -u)
 OBJ =$(SRC:src/%.cpp=obj/%.o)
@@ -20,11 +20,11 @@ $(TARGET):$(OBJ)
 $(OBJ):obj/%.o:src/%.cpp $(INC)
 	$(CC) $(OOPT) -o $@ $<
 
-$(LSRC):src/%.cpp:src/%.l
+$(LSRC):src/%.cpp:src/%.flex
 	flex -Ce -o $@ $<
 
-$(LEX):src/%.l:inc/%.hpp
-	script/$(shell basename -s ".l" $@).sh
+$(FLEX):src/%.flex:inc/%.hpp
+	script/lexical.sh $@ $<
 
 clean:
 	rm -rf $(OBJ) $(TARGET) $(LSRC)

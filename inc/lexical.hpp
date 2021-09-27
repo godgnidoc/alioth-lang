@@ -3,74 +3,50 @@
 
 #include <functional>
 
-#include "alex.hpp"
 #include "alioth.hpp"
+#include "token.hpp"
 
 namespace alioth {
 
-using token = alex::token;
-
-/** 词法记号表 */
-enum class VT : int {
-  /** START DEFS */
-  $,
-  SPACE /**RULE/(\s|\n)+/ELUR*/,  /* 空白符 */
-  AND /**RULE/and/ELUR*/,
-  AS /**RULE/as/ELUR*/,
-  BREAK /**RULE/break/ELUR*/,
-  CLASS /**RULE/class/ELUR*/,
-  CONTINUE /**RULE/continue/ELUR*/,
-  CONST /**RULE/const/ELUR*/,
-  DO /**RULE/do/ELUR*/,
-  DONE /**RULE/done/ELUR*/,
-  ENUM /**RULE/enum/ELUR*/,
-  ELSE /**RULE/else/ELUR*/,
-  FALSE /**RULE/false/ELUR*/,
-  FOR /**RULE/for/ELUR*/,
-  IF /**RULE/if/ELUR*/,
-  INTERFACE /**RULE/interface/ELUR*/,
-  LET /**RULE/let/ELUR*/,
-  MODULE /**RULE/module/ELUR*/,
-  NOT /**RULE/not/ELUR*/,
-  OR /**RULE/or/ELUR*/,
-  PUBLIC /**RULE/public/ELUR*/,
-  PRIVATE /**RULE/private/ELUR*/,
-  PROTECTED /**RULE/protected/ELUR*/,
-  RETURN /**RULE/return/ELUR*/,
-  UNIT /**RULE/unit/ELUR*/,
-  USE /**RULE/use/ELUR*/,
-  XOR /**RULE/xor/ELUR*/,
-  DECIMAL /**RULE/0|[1-9][[:digit:]]* /ELUR*/,
-  ID /**RULE/[[:alpha:]_][[:alnum:]_]* /ELUR*/,
-  COMMA /**RULE/,/ELUR*/,  /* 逗号 */
-  COLON /**RULE/:/ELUR*/,  /* 冒号 */
-  SEMI /**RULE/;/ELUR*/,   /* 分号 */
-  OPENSUB /**RULE/\(/ELUR*/,
-  CLOSESUB /**RULE/\)/ELUR*/,
-  OPENIDX /**RULE/\[/ELUR*/,
-  CLOSEIDX /**RULE/\]/ELUR*/,
-  OPENBLK /**RULE/\{/ELUR*/,
-  CLOSEBLK /**RULE/\}/ELUR*/,
-  
-  /** END DEFS */
-};
+class st_node;
 
 /** 词法分析器 */
 class Lexer {
- private:
-  void* m_impl;
+   public:
+    /** Start Condition, 定义顺序必须与fl中顺序一致 */
+    enum SC { INITIAL, DEPENDENCY, EXPRESSION };
 
- public:
-  Lexer(std::istream& is);
-  Lexer(const Lexer&) = delete;
-  Lexer(Lexer&&);
-  ~Lexer();
+   private:
+    void* m_impl;
 
-  void ontoken(std::function<int(token)>);
-  int parse();
+   public:
+    /**
+     * @param is 输入流 */
+    Lexer(std::istream& is);
+    Lexer(const Lexer&) = delete;
+    Lexer(Lexer&&);
+    ~Lexer();
 
-  static std::string IdName( VT );
-  static std::string IdName( int );
+    /** 解析下一个记号 */
+    token parse();
+
+    /**
+     * 解析一个记号并返回记号id
+     * @param ppterm
+     * 指向记号指针，Lexer将创建新的st_term对象并使用记号指针指向它
+     * @return 记号id
+     */
+    int operator()(st_node** ppterm, location* pploc);
+
+    /** 进入一个开始条件 */
+    void begin(SC);
+
+    /**
+     * 从记号id获取记号名
+     * @param id 记号id
+     * @return 记号名
+     */
+    static std::string kindname(int id);
 };
 
 }  // namespace alioth

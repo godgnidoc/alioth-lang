@@ -1,0 +1,211 @@
+%{
+#include "lexical.hpp"
+#include "syntactic.hpp"
+#include "syntax.hpp"
+
+#include <iostream>
+#include <map>
+
+/** 词法分析器上下文 */
+struct lexer_impl {
+  size_t line;
+  size_t column;
+  std::istream& is;
+};
+
+/** 根据单词计算偏移量 */
+void gincrement(lexer_impl*, const std::string&);
+alioth::token mktoken( lexer_impl* impl, int id, const std::string& = "" );
+
+/** 词法分析算返回0表示正常结束，返回非零表示其他情况 */
+#define YY_DECL alioth::token do_scan( yyscan_t yyscanner )
+
+/** 改写输入操作为读取输入流 */
+#define YY_INPUT( buf, result, max_size ) {\
+  yyextra->is.read(buf, max_size);\
+  result = yyextra->is.gcount();\
+}
+
+/** 报告一个单词 */
+#define EMITTOKEN( id ) return mktoken( yyextra, id, std::string(yytext, yyleng));
+
+%}
+
+%option noyywrap
+%option reentrant
+%option extra-type="lexer_impl*"
+
+/** 正在分析模块依赖 */
+%s DEPENDENCY
+
+/** 正在分析表达式 */
+%s EXPRESSION
+
+DIGIT [[:digit:]]
+INTEGER 0|[1-9]{DIGIT}*
+OCTAL 0[1-7]+
+DECIMAL {DIGIT}+(((e|E){DIGIT}+)|(\.{DIGIT}+((e|E){DIGIT}+)?))
+
+%%
+module                        {EMITTOKEN(alioth::VT::TK_MODULE);}
+<INITIAL,DEPENDENCY>import    {EMITTOKEN(alioth::VT::TK_IMPORT);}
+<DEPENDENCY>from              {EMITTOKEN(alioth::VT::TK_FROM);}
+
+interface                     {EMITTOKEN(alioth::VT::TK_INTERFACE);}
+class                         {EMITTOKEN(alioth::VT::TK_CLASS);}
+enum                          {EMITTOKEN(alioth::VT::TK_ENUM);}
+
+public                        {EMITTOKEN(alioth::VT::TK_PUBLIC);}
+private                       {EMITTOKEN(alioth::VT::TK_PRIVATE);}
+protected                     {EMITTOKEN(alioth::VT::TK_PROTECTED);}
+
+as                            {EMITTOKEN(alioth::VT::TK_AS);}
+in                            {EMITTOKEN(alioth::VT::TK_IN);}
+use                           {EMITTOKEN(alioth::VT::TK_USE);}
+
+do                            {EMITTOKEN(alioth::VT::TK_DO);}
+for                           {EMITTOKEN(alioth::VT::TK_FOR);}
+if                            {EMITTOKEN(alioth::VT::TK_IF);}
+else                          {EMITTOKEN(alioth::VT::TK_ELSE);}
+break                         {EMITTOKEN(alioth::VT::TK_BREAK);}
+continue                      {EMITTOKEN(alioth::VT::TK_CONTINUE);}
+return                        {EMITTOKEN(alioth::VT::TK_RETURN);}
+
+const                         {EMITTOKEN(alioth::VT::TK_CONST);}
+let                           {EMITTOKEN(alioth::VT::TK_LET);}
+
+and                           {EMITTOKEN(alioth::VT::TK_AND);}
+or                            {EMITTOKEN(alioth::VT::TK_OR);}
+not                           {EMITTOKEN(alioth::VT::TK_NOT);}
+xor                           {EMITTOKEN(alioth::VT::TK_XOR);}
+
+,                             {EMITTOKEN(alioth::VT::TK_COMMA);}
+:                             {EMITTOKEN(alioth::VT::TK_COLON);}
+;                             {EMITTOKEN(alioth::VT::TK_SEMI);}
+
+!                             {EMITTOKEN(alioth::VT::TK_SUP);}
+\?                            {EMITTOKEN(alioth::VT::TK_QST);}
+\.                            {EMITTOKEN(alioth::VT::TK_DOT);}
+\.\.\.                        {EMITTOKEN(alioth::VT::TK_ETC);}
+
+\(                            {EMITTOKEN(alioth::VT::TK_OPE);}
+\)                            {EMITTOKEN(alioth::VT::TK_CLE);}
+\[                            {EMITTOKEN(alioth::VT::TK_OPI);}
+\]                            {EMITTOKEN(alioth::VT::TK_CLI);}
+\{                            {EMITTOKEN(alioth::VT::TK_OPB);}
+\}                            {EMITTOKEN(alioth::VT::TK_CLB);}
+
+\+                            {EMITTOKEN(alioth::VT::TK_ADD);}
+\-                            {EMITTOKEN(alioth::VT::TK_SUB);}
+\*                            {EMITTOKEN(alioth::VT::TK_MUL);}
+\/                            {EMITTOKEN(alioth::VT::TK_DIV);}
+\%                            {EMITTOKEN(alioth::VT::TK_MOL);}
+
+\&                            {EMITTOKEN(alioth::VT::TK_BITAND);}
+\|                            {EMITTOKEN(alioth::VT::TK_BITOR);}
+\^                            {EMITTOKEN(alioth::VT::TK_BITXOR);}
+\~                            {EMITTOKEN(alioth::VT::TK_BITNOT);}
+\<\<                          {EMITTOKEN(alioth::VT::TK_SHL);}
+<EXPRESSION>\>\>              {EMITTOKEN(alioth::VT::TK_SHR);}
+
+=                             {EMITTOKEN(alioth::VT::TK_ASS);}
+\+=                           {EMITTOKEN(alioth::VT::TK_ASS_ADD);}
+\-=                           {EMITTOKEN(alioth::VT::TK_ASS_SUB);}
+\*=                           {EMITTOKEN(alioth::VT::TK_ASS_MUL);}
+\/=                           {EMITTOKEN(alioth::VT::TK_ASS_DIV);}
+\%=                           {EMITTOKEN(alioth::VT::TK_ASS_MOL);}
+\<\<=                         {EMITTOKEN(alioth::VT::TK_ASS_SHL);}
+\>\>=                         {EMITTOKEN(alioth::VT::TK_ASS_SHR);}
+\&=                           {EMITTOKEN(alioth::VT::TK_ASS_BITAND);}
+\|=                           {EMITTOKEN(alioth::VT::TK_ASS_BITOR);}
+\^=                           {EMITTOKEN(alioth::VT::TK_ASS_BITXOR);}
+
+
+null                          {EMITTOKEN(alioth::VT::TK_NULL);}
+false                         {EMITTOKEN(alioth::VT::TK_FALSE);}
+true                          {EMITTOKEN(alioth::VT::TK_TRUE);}
+this                          {EMITTOKEN(alioth::VT::TK_THIS);}
+{INTEGER}                     {EMITTOKEN(alioth::VT::TK_INTEGER);}
+{DECIMAL}                     {EMITTOKEN(alioth::VT::TK_DECIMAL);}
+{OCTAL}                       {EMITTOKEN(alioth::VT::TK_OCTAL);}
+\"([^"\n]|\\\")*\"            {EMITTOKEN(alioth::VT::TK_DQSTR);}
+\'([^'\n]|\\\')*\'            {EMITTOKEN(alioth::VT::TK_SQSTR);}
+[[:alpha:]_][[:alnum:]_]*     {EMITTOKEN(alioth::VT::TK_ID);}
+
+([[:space:]]|\n)+             {EMITTOKEN(alioth::VT::TK_SPACE);}
+\/\/.*                        {EMITTOKEN(alioth::VT::TK_COMMENT);}
+\/\*(.|\n)*\*\/               {EMITTOKEN(alioth::VT::TK_COMMENT);}
+{DIGIT}+[[:alpha:]]+          {EMITTOKEN(alioth::VT::TK_YYUNDEF);}
+<<EOF>>                       { EMITTOKEN(alioth::VT::TK_YYEOF); }
+.                             { EMITTOKEN(alioth::VT::TK_YYUNDEF); }
+%%
+
+/** 根据当前分析内容构建记号 */
+alioth::token mktoken( lexer_impl* impl, int id, const std::string& tx ) {
+  alioth::token t;
+  t.id =(int)id;
+  t.tx = tx;
+  t.loc.initialize();
+  t.loc.begin.line = impl->line;
+  t.loc.begin.column = impl->column;
+  gincrement(impl, t.tx);
+  t.loc.end.line = impl->line;
+  t.loc.end.column = impl->column;
+  return t;
+}
+
+namespace alioth {
+  std::string kind_name( alioth::VT id );
+
+  Lexer::Lexer(std::istream& is) {
+    auto impl = new lexer_impl{
+      line: 1,
+      column: 1,
+      is:is
+    };
+    yylex_init_extra(impl, &m_impl);
+  }
+  Lexer::Lexer( Lexer&& an ):m_impl(an.m_impl) {
+    an.m_impl = nullptr;
+  }
+  Lexer::~Lexer() {
+    if( m_impl ) {
+      delete yyget_extra(m_impl);
+      yylex_destroy( m_impl );
+    }
+  }
+  
+  token Lexer::parse() {
+    return do_scan(m_impl);
+  }
+
+  int Lexer::operator() (st_node** ppnode, location* ploc) {
+    token token;
+    do {
+      token = parse();
+      /* std::cout << kindname(token.id) << " " << token.tx << std::endl; */
+    } while( token.id == VT::TK_SPACE || token.id == VT::TK_COMMENT);
+    *ploc = token.loc;
+    *ppnode = new st_term(token);
+    return token.id;
+  }
+
+  void Lexer::begin( SC sc ) {
+    auto yyg = (yyguts_t *)m_impl;
+    BEGIN(sc);
+  }
+
+  std::string Lexer::kindname( int id ) {
+    return kind_name( (VT)id );
+  }
+  
+}
+
+void gincrement(lexer_impl* impl, const std::string& content ) {
+  for( auto c : content ) {
+    if( c == '\n' )
+      impl->line += (impl->column = 1);
+    else
+      impl->column += 1;
+  }
+}

@@ -1,0 +1,49 @@
+module hello
+
+import io, string, list from 'std'
+
+interface IIterator<T> {
+    + get hasNext : bool
+    + next(): bool
+    + value : &T
+}
+
+interface IIteratible<T> {
+    + iter(): IIterator<T>
+}
+
+class list<T> : IIteratible {
+
+    + class iterator : IIterator {
+        + get hasNext(): bool
+        + next(): bool
+    }
+
+    - head : *T = null
+
+    + insert( data : &T, pos : i32 ) : &list<T>
+}
+
+enum HttpMethod { Get Post }
+
+/**
+ * 结构体用于简便封装数据
+ * 结构体不能定义无参数构造函数
+ * 结构体不包含隐藏成分
+ * 结构体中的恒等成员可用于区分结构 */
+
+struct HttpConfigGet {
+    method == HttpMethod.Get
+    url : string
+    params : list of string
+}
+
+struct HttpConfigPost {
+    method == HttpMethod.Post
+    url : string
+    body : block
+}
+
+list.insert( & data : T, pos : i32 ) : &list<T> {
+
+}

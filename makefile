@@ -1,12 +1,20 @@
 SHELL = /bin/bash
 
 # Variables used for compiling sources
-INC =$(wildcard inc/*.hpp)
-FLEX =$(wildcard src/*.flex)
-LSRC =$(FLEX:src/%.flex=src/%.cpp)
+FLEX =$(wildcard src/*.fl)
+LSRC =$(FLEX:src/%.fl=src/%.cpp)
+
+BISON =$(wildcard src/*.ypp)
+SINC =$(BISON:src/%.ypp=inc/%.hpp)
+SSRC =$(BISON:src/%.ypp=src/%.cpp)
+
 CSRC =$(wildcard src/*.cpp)
-SRC =$(shell echo $(CSRC) $(LSRC) | sed "s/\s/\n/g" | sort -u)
+CINC =$(wildcard inc/*.hpp)
+
+SRC =$(shell echo $(CSRC) $(LSRC) $(SSRC) | sed "s/\s/\n/g" | sort -u)
+INC =$(shell echo $(CICN) $(SINC) | sed "s/\s/\n/g" | sort -u)
 OBJ =$(SRC:src/%.cpp=obj/%.o)
+
 CC = g++
 OOPT = -Iinc -I../libz/inc -std=gnu++17 -g -c
 LOPT = -L../libz/arc -lpthread -lz
@@ -20,13 +28,16 @@ $(TARGET):$(OBJ)
 $(OBJ):obj/%.o:src/%.cpp $(INC)
 	$(CC) $(OOPT) -o $@ $<
 
-$(LSRC):src/%.cpp:src/%.flex
+$(LSRC):src/%.cpp:src/%.fl
 	flex -Ce -o $@ $<
 
-$(FLEX):src/%.flex:inc/%.hpp
-	script/lexical.sh $@ $<
+$(SSRC):src/%.cpp:src/%.ypp
+	bison $<
+
+$(SINC):inc/%.hpp:src/%.ypp
+	bison $<
 
 clean:
-	rm -rf $(OBJ) $(TARGET) $(LSRC)
+	rm -rf $(OBJ) $(TARGET) $(LSRC) $(SSRC)
 
 .PHONY: init clean install

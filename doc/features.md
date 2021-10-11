@@ -2,7 +2,7 @@
 
 > Sep. 09, 2021 by GodGnidoc
 
-本文裆散列Alioth语言特性，用于指导语法设计及编译器开发。
+本文档散列Alioth语言特性，用于指导语法设计及编译器开发。
 
 # 1. 目录
 
@@ -28,6 +28,7 @@
   - [4.14. 迭代循环](#414-迭代循环)
   - [4.15. 条件循环](#415-条件循环)
   - [4.18. 表达式](#418-表达式)
+  - [4.19. lambdai表达式](#419-lambdai表达式)
 
 # 2. 模块
 
@@ -339,6 +340,14 @@ expr =
     | expr.array
     | expr.lambda
     | expr.await;
+~~~
+
+## 4.19. lambdai表达式
+
+~~~
+expr.lamdda = 
+    ID DRP statement
+    | parameter.list DRP statement;
 ~~~
 
 若函数无闭包需求，则编译器将根据入参尝试裁剪不可能的分支，构造隐函数

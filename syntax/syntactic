@@ -1,0 +1,129 @@
+%code top {
+#include "syntactic.hpp"
+#include "lexical.hpp"
+}
+
+%code requires {
+#include "syntax.hpp"
+#include "token.hpp"
+
+namespace alioth {
+class Lexer;
+}
+}
+
+%code provides {
+namespace alioth {
+
+    /** Start Condition, 由语法分析器用于修改词法分析器语境 */
+    enum class SC {
+        INITIAL,
+        /** @MARK[SC] */
+    };
+
+    /** 终结符ID */
+    using VT = Parser::token_kind_type;
+
+    /** 非终结符ID */
+    using VN = Parser::symbol_kind_type;
+
+    /** 获取终结符记号名称 */
+    std::string kind_name( alioth::VT t );
+
+    /** 获取非终结符记号名称 */
+    std::string kind_name( alioth::VN n );
+
+    /** 获取终结符或非终结符记号名称 */
+    std::string kind_name( int i );
+}
+}
+
+%code {
+namespace alioth {
+    template<typename ... Args>
+    void kick( Args ... args ) {
+        (node_t(args), ...);
+    }
+}
+
+using namespace alioth;
+
+st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
+}
+
+%glr-parser
+%language "C++"
+%require "3.7"
+%defines "syntactic.hpp"
+%output "syntactic.cpp"
+%token-table
+%locations
+
+%parse-param { alioth::Lexer& yylex }
+%parse-param { alioth::doc_t& doc }
+%initial-action {
+}
+
+%destructor { {if( $$ ) { node_t node = $$;} } } <>
+
+%define api.location.file "location.hpp"
+%define api.parser.class {Parser}
+%define api.namespace {alioth}
+%define api.value.type {st_node*}
+%define api.token.prefix {TK_}
+%define api.token.raw
+%define parse.error verbose
+
+%token SPACE COMMENT
+%token CONST
+%token AS LET USE IN IMPORT FROM
+%token CLASS ENUM UNIT INTERFACE MODULE
+%token IF ELSE FOR WHILE DO RETURN BREAK CONTINUE
+%token PUBLIC PRIVATE PROTECTED
+%token ID INTEGER DECIMAL OCTAL HEX TRUE FALSE NULL DQSTR SQSTR THIS
+%token COMMA COLON SEMI
+%token OPE CLE OPI CLI OPB CLB
+%token DOT ETC MOL BITAND BITOR BITXOR BITNOT SHL SHR
+%token ASS ASS_ADD ASS_SUB ASS_MUL ASS_DIV ASS_MOL ASS_SHL ASS_SHR ASS_BITAND ASS_BITOR ASS_BITXOR
+
+%right ASS ASS_ADD ASS_SUB ASS_MUL ASS_DIV ASS_MOL ASS_SHL ASS_SHR ASS_BITAND ASS_BITOR ASS_BITXOR
+%nonassoc NOT
+%left AND 
+%left OR XOR
+%left ADD SUB
+%left MUL DIV MOL
+%nonassoc SUP QST
+%left DOT
+
+%start doc
+
+%%
+
+/** @MARK[RULE] */
+
+%%
+
+namespace alioth {
+    std::string kind_name( alioth::VT t ) {
+        return yysymbol_name((alioth::VN)t);
+    }
+
+    std::string kind_name( alioth::VN n ) {
+        return yysymbol_name(n);
+    }
+    std::string kind_name( int i ) {
+        return yysymbol_name((alioth::VN)i);
+    }
+
+    void Parser::error( const location_type& loc, const std::string& msg ) {
+        std::cerr << loc << ' ' << msg << std::endl;
+    }
+}
+
+st_node* fetch( st_node* res, st_node* lhs, st_node* rhs) {
+    if( lhs )
+        res->loc = lhs->loc;
+    if( rhs )
+        res->loc += rhs->loc;
+    return res;
+}

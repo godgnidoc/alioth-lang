@@ -1,23 +1,34 @@
 SHELL = /bin/bash
 
 # Variables used for compiling sources
-FLEX =$(wildcard src/*.fl)
-LSRC =$(FLEX:src/%.fl=src/%.cpp)
 
-BISON =$(wildcard src/*.ypp)
-SINC =$(BISON:src/%.ypp=inc/%.hpp)
-SSRC =$(BISON:src/%.ypp=src/%.cpp)
+ARCH    =x86_64
+OS      =Linux
+VERSION =1.0.0-build1
+OOPT += -D__ARCH=\"$(ARCH)\" -D__OS=\"$(OS)\" -D__VERSION=\"$(VERSION)\"
+
+FLEX =syntax/lexical.fl
+LSRC =gen/lexical.cpp
+LINC =
+LOBJ =$(LSRC:gen/%.cpp=obj/%.o)
+
+BISON =gen/syntactic.ypp
+SINC =gen/syntactic.hpp
+SSRC =gen/syntactic.cpp
+SOBJ =$(SSRC:gen/%.cpp=obj/%.o)
+SYNTAX =$(wildcard syntax/syntax-*)
 
 CSRC =$(wildcard src/*.cpp)
 CINC =$(wildcard inc/*.hpp)
+COBJ =$(CSRC:src/%.cpp=obj/%.o)
 
 SRC =$(shell echo $(CSRC) $(LSRC) $(SSRC) | sed "s/\s/\n/g" | sort -u)
-INC =$(shell echo $(CICN) $(SINC) | sed "s/\s/\n/g" | sort -u)
-OBJ =$(SRC:src/%.cpp=obj/%.o)
+INC =$(shell echo $(CICN) $(LINC) $(SINC) | sed "s/\s/\n/g" | sort -u)
+OBJ =$(shell echo $(COBJ) $(LOBJ) $(SOBJ) | sed "s/\s/\n/g" | sort -u)
 
 CC = g++
-OOPT = -Iinc -I../libz/inc -std=gnu++17 -g -c
-LOPT = -L../libz/arc -lpthread -lz
+OOPT += -Iinc -Igen -I../libz/inc -std=gnu++17 -g -c
+LOPT += -L../libz/arc -lpthread -lz
 TARGET = bin/alioth
 
 # link all object files to compiler
@@ -25,19 +36,28 @@ $(TARGET):$(OBJ)
 	$(CC) $(OBJ) $(LOPT) -o $@
 
 # compile every single source code document to object file
-$(OBJ):obj/%.o:src/%.cpp $(INC)
+$(COBJ):obj/%.o:src/%.cpp $(INC)
 	$(CC) $(OOPT) -o $@ $<
 
-$(LSRC):src/%.cpp:src/%.fl
+$(SOBJ) $(LOBJ):obj/%.o:gen/%.cpp $(INC)
+	$(CC) $(OOPT) -o $@ $<
+
+$(LSRC):gen/%.cpp:syntax/%.fl
 	flex -Ce -o $@ $<
 
-$(SSRC):src/%.cpp:src/%.ypp
-	bison $<
+$(SSRC):gen/%.cpp:gen/%.ypp
+	cd gen && bison ../$<
 
-$(SINC):inc/%.hpp:src/%.ypp
-	bison $<
+$(SINC):gen/%.hpp:gen/%.ypp
+	cd gen && bison ../$<
+
+$(BISON):$(SYNTAX) syntax/syntactic $(FLEX)
+	sed "/\/\*\* @MARK\[RULE\] \*\//e cat syntax/syntax-*" syntax/syntactic > $@
+	sed -n 's/^%s \(\w\+\)/        \1,/p' $(FLEX) | tee gen/sc
+	sed -i "/\/\*\* @MARK\[SC\] \*\//r gen/sc" $@
+	rm gen/sc
 
 clean:
-	rm -rf $(OBJ) $(TARGET) $(LSRC) $(SSRC)
+	rm -rf $(OBJ) $(TARGET) gen/*
 
 .PHONY: init clean install

@@ -1,6 +1,6 @@
-#line 2 "src/lexical.cpp"
+#line 2 "gen/lexical.cpp"
 
-#line 4 "src/lexical.cpp"
+#line 4 "gen/lexical.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -603,8 +603,8 @@ static const flex_int16_t yy_chk[584] =
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-#line 1 "src/lexical.fl"
-#line 2 "src/lexical.fl"
+#line 1 "syntax/lexical.fl"
+#line 2 "syntax/lexical.fl"
 #include "lexical.hpp"
 #include "syntactic.hpp"
 #include "syntax.hpp"
@@ -614,14 +614,26 @@ static const flex_int16_t yy_chk[584] =
 
 /** 词法分析器上下文 */
 struct lexer_impl {
-  size_t line;
-  size_t column;
-  std::istream& is;
+  /** @TODO fname 当前文件名 */
+  size_t line; // 当前行
+  size_t column; // 当前列
+  std::istream& is; // 当前输入流
 };
 
-/** 根据单词计算偏移量 */
-void gincrement(lexer_impl*, const std::string&);
-alioth::token mktoken( lexer_impl* impl, int id, const std::string& = "" );
+/** 
+ * 根据单词计算偏移量，运算结果作用于上下文
+ * @param impl 词法分析器上下文
+ * @param term 单词
+ */
+void gincrement(lexer_impl* impl, const std::string& term);
+
+/**
+ * 使用当前上下文构造并返回一个词法记号
+ * @param impl 词法分析器上下文
+ * @param id 词法记号id
+ * @param tx 词法记号文本内容
+ */
+alioth::token mktoken( lexer_impl* impl, int id, const std::string& tx = "" );
 
 /** 词法分析算返回0表示正常结束，返回非零表示其他情况 */
 #define YY_DECL alioth::token do_scan( yyscan_t yyscanner )
@@ -635,12 +647,15 @@ alioth::token mktoken( lexer_impl* impl, int id, const std::string& = "" );
 /** 报告一个单词 */
 #define EMITTOKEN( id ) return mktoken( yyextra, id, std::string(yytext, yyleng));
 
-#line 639 "src/lexical.cpp"
-/** 正在分析模块依赖 */
+#line 651 "gen/lexical.cpp"
+/** @note 不需要yywrap函数 */
+/** @note 词法分析器需要可重入 */
+/** @note 扩展数据结构用于存储此法分析器上下文 */
+/** StartCondition，正在分析模块依赖 */
 
-/** 正在分析表达式 */
+/** StartCondition，正在分析表达式 */
 
-#line 644 "src/lexical.cpp"
+#line 659 "gen/lexical.cpp"
 
 #define INITIAL 0
 #define DEPENDENCY 1
@@ -900,9 +915,9 @@ YY_DECL
 		}
 
 	{
-#line 49 "src/lexical.fl"
+#line 66 "syntax/lexical.fl"
 
-#line 906 "src/lexical.cpp"
+#line 921 "gen/lexical.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -959,393 +974,393 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 50 "src/lexical.fl"
+#line 67 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_MODULE);}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 51 "src/lexical.fl"
+#line 68 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_IMPORT);}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 52 "src/lexical.fl"
+#line 69 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_FROM);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 54 "src/lexical.fl"
+#line 71 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_INTERFACE);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 55 "src/lexical.fl"
+#line 72 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_CLASS);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 56 "src/lexical.fl"
+#line 73 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ENUM);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 58 "src/lexical.fl"
+#line 75 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_PUBLIC);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 59 "src/lexical.fl"
+#line 76 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_PRIVATE);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 60 "src/lexical.fl"
+#line 77 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_PROTECTED);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 62 "src/lexical.fl"
+#line 79 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_AS);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 63 "src/lexical.fl"
+#line 80 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_IN);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 64 "src/lexical.fl"
+#line 81 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_USE);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 66 "src/lexical.fl"
+#line 83 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_DO);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 67 "src/lexical.fl"
+#line 84 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_FOR);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 68 "src/lexical.fl"
+#line 85 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_IF);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 69 "src/lexical.fl"
+#line 86 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ELSE);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 70 "src/lexical.fl"
+#line 87 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_BREAK);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 71 "src/lexical.fl"
+#line 88 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_CONTINUE);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 72 "src/lexical.fl"
+#line 89 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_RETURN);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 74 "src/lexical.fl"
+#line 91 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_CONST);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 75 "src/lexical.fl"
+#line 92 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_LET);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 77 "src/lexical.fl"
+#line 94 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_AND);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 78 "src/lexical.fl"
+#line 95 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_OR);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 79 "src/lexical.fl"
+#line 96 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_NOT);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 80 "src/lexical.fl"
+#line 97 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_XOR);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 82 "src/lexical.fl"
+#line 99 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_COMMA);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 83 "src/lexical.fl"
+#line 100 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_COLON);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 84 "src/lexical.fl"
+#line 101 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_SEMI);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 86 "src/lexical.fl"
+#line 103 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_SUP);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 87 "src/lexical.fl"
+#line 104 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_QST);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 88 "src/lexical.fl"
+#line 105 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_DOT);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 89 "src/lexical.fl"
+#line 106 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ETC);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 91 "src/lexical.fl"
+#line 108 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_OPE);}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 92 "src/lexical.fl"
+#line 109 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_CLE);}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 93 "src/lexical.fl"
+#line 110 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_OPI);}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 94 "src/lexical.fl"
+#line 111 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_CLI);}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 95 "src/lexical.fl"
+#line 112 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_OPB);}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 96 "src/lexical.fl"
+#line 113 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_CLB);}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 98 "src/lexical.fl"
+#line 115 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ADD);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 99 "src/lexical.fl"
+#line 116 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_SUB);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 100 "src/lexical.fl"
+#line 117 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_MUL);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 101 "src/lexical.fl"
+#line 118 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_DIV);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 102 "src/lexical.fl"
+#line 119 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_MOL);}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 104 "src/lexical.fl"
+#line 121 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_BITAND);}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 105 "src/lexical.fl"
+#line 122 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_BITOR);}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 106 "src/lexical.fl"
+#line 123 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_BITXOR);}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 107 "src/lexical.fl"
+#line 124 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_BITNOT);}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 108 "src/lexical.fl"
+#line 125 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_SHL);}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 109 "src/lexical.fl"
+#line 126 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_SHR);}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 111 "src/lexical.fl"
+#line 128 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS);}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 112 "src/lexical.fl"
+#line 129 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_ADD);}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 113 "src/lexical.fl"
+#line 130 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_SUB);}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 114 "src/lexical.fl"
+#line 131 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_MUL);}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 115 "src/lexical.fl"
+#line 132 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_DIV);}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 116 "src/lexical.fl"
+#line 133 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_MOL);}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 117 "src/lexical.fl"
+#line 134 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_SHL);}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 118 "src/lexical.fl"
+#line 135 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_SHR);}
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 119 "src/lexical.fl"
+#line 136 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_BITAND);}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 120 "src/lexical.fl"
+#line 137 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_BITOR);}
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 121 "src/lexical.fl"
+#line 138 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ASS_BITXOR);}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 124 "src/lexical.fl"
+#line 141 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_NULL);}
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 125 "src/lexical.fl"
+#line 142 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_FALSE);}
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 126 "src/lexical.fl"
+#line 143 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_TRUE);}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 127 "src/lexical.fl"
+#line 144 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_THIS);}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 128 "src/lexical.fl"
+#line 145 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_INTEGER);}
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 129 "src/lexical.fl"
+#line 146 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_DECIMAL);}
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 130 "src/lexical.fl"
+#line 147 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_OCTAL);}
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 131 "src/lexical.fl"
+#line 148 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_DQSTR);}
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 132 "src/lexical.fl"
+#line 149 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_SQSTR);}
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 133 "src/lexical.fl"
+#line 150 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_ID);}
 	YY_BREAK
 case 71:
 /* rule 71 can match eol */
 YY_RULE_SETUP
-#line 135 "src/lexical.fl"
+#line 152 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_SPACE);}
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 136 "src/lexical.fl"
+#line 153 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_COMMENT);}
 	YY_BREAK
 case 73:
 /* rule 73 can match eol */
 YY_RULE_SETUP
-#line 137 "src/lexical.fl"
+#line 154 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_COMMENT);}
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 138 "src/lexical.fl"
+#line 155 "syntax/lexical.fl"
 {EMITTOKEN(alioth::VT::TK_YYUNDEF);}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(DEPENDENCY):
 case YY_STATE_EOF(EXPRESSION):
-#line 139 "src/lexical.fl"
+#line 156 "syntax/lexical.fl"
 { EMITTOKEN(alioth::VT::TK_YYEOF); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 140 "src/lexical.fl"
+#line 157 "syntax/lexical.fl"
 { EMITTOKEN(alioth::VT::TK_YYUNDEF); }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 141 "src/lexical.fl"
+#line 158 "syntax/lexical.fl"
 ECHO;
 	YY_BREAK
-#line 1349 "src/lexical.cpp"
+#line 1364 "gen/lexical.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2508,7 +2523,7 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 141 "src/lexical.fl"
+#line 158 "syntax/lexical.fl"
 
 
 /** 根据当前分析内容构建记号 */
@@ -2516,6 +2531,7 @@ alioth::token mktoken( lexer_impl* impl, int id, const std::string& tx ) {
   alioth::token t;
   t.id =(int)id;
   t.tx = tx;
+  /** @todo 添加当前词法记号所属的文件 */
   t.loc.initialize();
   t.loc.begin.line = impl->line;
   t.loc.begin.column = impl->column;
@@ -2526,6 +2542,7 @@ alioth::token mktoken( lexer_impl* impl, int id, const std::string& tx ) {
 }
 
 namespace alioth {
+  /** 获取词法记号的kind name，单词表从语法规定文件生成，故此函数由语法模块定义 */
   std::string kind_name( alioth::VT id );
 
   Lexer::Lexer(std::istream& is) {
@@ -2556,14 +2573,16 @@ namespace alioth {
       token = parse();
       /* std::cout << kindname(token.id) << " " << token.tx << std::endl; */
     } while( token.id == VT::TK_SPACE || token.id == VT::TK_COMMENT);
-    *ploc = token.loc;
-    *ppnode = new st_term(token);
+    if( ploc)
+      *ploc = token.loc;
+    if( ppnode )
+      *ppnode = new st_term(token);
     return token.id;
   }
 
   void Lexer::begin( SC sc ) {
     auto yyg = (yyguts_t *)m_impl;
-    BEGIN(sc);
+    BEGIN((int)sc);
   }
 
   std::string Lexer::kindname( int id ) {

@@ -3,6 +3,18 @@
 
 #include "cli.hpp"
 
+#ifndef __ARCH
+#define __ARCH "undefined"
+#endif
+
+#ifndef __VERSION
+#define __VERSION "undefined"
+#endif
+
+#ifndef __OS
+#define __OS "undefined"
+#endif
+
 namespace alioth {
 using namespace godgnidoc;
 

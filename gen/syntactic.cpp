@@ -50,12 +50,12 @@
 
 
 // "%code top" blocks.
-#line 1 "src/syntactic.ypp"
+#line 1 "../gen/syntactic.ypp"
 
 #include "syntactic.hpp"
 #include "lexical.hpp"
 
-#line 59 "src/syntactic.cpp"
+#line 59 "syntactic.cpp"
 
 
 
@@ -184,15 +184,15 @@ typedef alioth::Parser::symbol_kind_type yysymbol_kind_t;
 #define S_doc           alioth::Parser::symbol_kind::S_doc
 #define S_80_doc_header alioth::Parser::symbol_kind::S_80_doc_header
 #define S_81_doc_body   alioth::Parser::symbol_kind::S_81_doc_body
+#define S_enum          alioth::Parser::symbol_kind::S_enum
+#define S_83_enum_items alioth::Parser::symbol_kind::S_83_enum_items
+#define S_enumi         alioth::Parser::symbol_kind::S_enumi
 #define S_modecl        alioth::Parser::symbol_kind::S_modecl
 #define S_import        alioth::Parser::symbol_kind::S_import
-#define S_84_1          alioth::Parser::symbol_kind::S_84_1
-#define S_85_import_package alioth::Parser::symbol_kind::S_85_import_package
-#define S_86_import_modules alioth::Parser::symbol_kind::S_86_import_modules
+#define S_87_1          alioth::Parser::symbol_kind::S_87_1
+#define S_88_import_package alioth::Parser::symbol_kind::S_88_import_package
+#define S_89_import_modules alioth::Parser::symbol_kind::S_89_import_modules
 #define S_modesc        alioth::Parser::symbol_kind::S_modesc
-#define S_enum          alioth::Parser::symbol_kind::S_enum
-#define S_89_enum_items alioth::Parser::symbol_kind::S_89_enum_items
-#define S_enumi         alioth::Parser::symbol_kind::S_enumi
 
 
 /* Default (constant) value used for initialization for null
@@ -207,15 +207,15 @@ static YYLTYPE yyloc_default
 ;
 
 // Second part of user prologue.
-#line 211 "src/syntactic.cpp"
+#line 211 "syntactic.cpp"
 static void
 yyerror (const alioth::Parser::location_type *yylocationp,
          alioth::Parser& yyparser, alioth::Lexer& yylex, alioth::doc_t& doc,
          const char* msg);
-#line 216 "src/syntactic.cpp"
+#line 216 "syntactic.cpp"
 
 // Unqualified %code blocks.
-#line 25 "src/syntactic.ypp"
+#line 43 "../gen/syntactic.ypp"
 
 namespace alioth {
     template<typename ... Args>
@@ -228,7 +228,7 @@ using namespace alioth;
 
 st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 
-#line 232 "src/syntactic.cpp"
+#line 232 "syntactic.cpp"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -481,9 +481,9 @@ typedef int yytype_uint16;
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  13
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  22
+#define YYNRULES  21
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  36
+#define YYNSTATES  35
 /* YYMAXRHS -- Maximum number of symbols on right-hand side of rule.  */
 #define YYMAXRHS 5
 /* YYMAXLEFT -- Maximum number of symbols to the left of a handle
@@ -501,23 +501,23 @@ typedef int yytype_uint16;
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    84,    84,    92,    96,   102,   105,   111,   119,   119,
-     129,   129,   132,   136,   143,   148,   154,   163,   173,   177,
-     180,   186,   190
+       0,   105,   105,   113,   117,   123,   126,   130,   140,   144,
+     147,   153,   157,   164,   171,   171,   181,   181,   184,   188,
+     195,   200
 };
 #endif
 
-#define YYPACT_NINF (-39)
+#define YYPACT_NINF (-41)
 #define YYTABLE_NINF (-1)
 
   // YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
   // STATE-NUM.
 static const yytype_int8 yypact[] =
 {
-     -12,   -20,     9,     0,   -39,   -39,   -39,   -39,    -2,   -39,
-     -14,   -13,   -39,    10,   -11,   -39,   -29,   -25,   -30,   -14,
-     -10,   -39,   -39,   -39,   -39,   -39,   -39,   -38,   -27,   -39,
-      -9,   -10,   -39,   -39,   -39,   -39
+     -10,   -21,     8,    -1,   -41,   -41,   -41,   -41,    -3,   -41,
+     -17,   -15,   -41,     9,   -11,   -41,   -32,   -12,   -33,   -17,
+      -9,   -41,   -41,   -41,   -41,   -41,   -40,   -27,   -41,    -8,
+      -9,   -41,   -41,   -41,   -41
 };
 
   // YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -525,24 +525,24 @@ static const yytype_int8 yypact[] =
   // means the default is an error.
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     5,     3,     7,     1,     8,     2,     4,
-       0,     0,     6,    14,     0,    12,     0,     0,     0,     0,
-       0,    15,    16,    10,    11,     9,    13,    21,     0,    18,
-       0,     0,    17,    19,    22,    20
+       0,     0,     0,     5,     3,    13,     1,    14,     2,     4,
+       0,     0,     6,    20,     0,    18,     0,     0,     0,     0,
+       0,    21,    16,    17,    15,    19,    11,     0,     8,     0,
+       0,     7,     9,    12,    10
 };
 
   // YYPGOTO[NTERM-NUM].
 static const yytype_int8 yypgoto[] =
 {
-     -39,   -39,   -39,   -39,   -39,   -39,   -39,   -39,   -39,     3,
-     -39,   -39,   -26
+     -41,   -41,   -41,   -41,   -41,   -41,   -25,   -41,   -41,   -41,
+     -41,   -41,     2
 };
 
   // YYDEFGOTO[NTERM-NUM].
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     3,     8,     4,     9,    10,    25,    14,    15,
-      12,    28,    29
+       0,     2,     3,     8,    12,    27,    28,     4,     9,    10,
+      24,    14,    15
 };
 
   // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -550,42 +550,42 @@ static const yytype_int8 yydefgoto[] =
   // number is the opposite.  If YYTABLE_NINF, syntax error.
 static const yytype_int8 yytable[] =
 {
-      18,    27,    33,    21,     1,    35,    23,    24,     5,     6,
-       7,    11,    31,    22,    13,    16,    17,    20,    27,    30,
-      32,    34,    26,     0,     0,     0,     0,     0,    19
+      18,    26,    32,    22,    23,    34,     1,     5,     6,     7,
+      11,    13,    30,    16,    20,    17,    21,    29,     0,    26,
+      31,    25,    33,     0,     0,     0,     0,     0,    19
 };
 
 static const yytype_int8 yycheck[] =
 {
-      11,    28,    28,    28,    16,    31,    36,    37,    28,     0,
-      10,    13,    39,    38,    28,    28,     6,    46,    28,    57,
-      47,    30,    19,    -1,    -1,    -1,    -1,    -1,    39
+      11,    28,    27,    36,    37,    30,    16,    28,     0,    10,
+      13,    28,    39,    28,    46,     6,    28,    57,    -1,    28,
+      47,    19,    30,    -1,    -1,    -1,    -1,    -1,    39
 };
 
   // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
   // symbol of state STATE-NUM.
 static const yytype_int8 yystos[] =
 {
-       0,    16,    79,    80,    82,    28,     0,    10,    81,    83,
-      84,    13,    88,    28,    86,    87,    28,     6,    11,    39,
-      46,    28,    38,    36,    37,    85,    87,    28,    89,    90,
-      57,    39,    47,    90,    30,    90
+       0,    16,    79,    80,    85,    28,     0,    10,    81,    86,
+      87,    13,    82,    28,    89,    90,    28,     6,    11,    39,
+      46,    28,    36,    37,    88,    90,    28,    83,    84,    57,
+      39,    47,    84,    30,    84
 };
 
   // YYR1[YYN] -- Symbol number of symbol that rule YYN derives.
 static const yytype_int8 yyr1[] =
 {
-       0,    78,    79,    80,    80,    81,    81,    82,    84,    83,
-      85,    85,    86,    86,    87,    87,    87,    88,    89,    89,
-      89,    90,    90
+       0,    78,    79,    80,    80,    81,    81,    82,    83,    83,
+      83,    84,    84,    85,    87,    86,    88,    88,    89,    89,
+      90,    90
 };
 
   // YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     2,     1,     2,     0,     2,     2,     0,     5,
-       1,     1,     1,     3,     1,     3,     3,     5,     1,     2,
-       3,     1,     3
+       0,     2,     2,     1,     2,     0,     2,     5,     1,     2,
+       3,     1,     3,     2,     0,     5,     1,     1,     1,     3,
+       1,     3
 };
 
 
@@ -594,7 +594,7 @@ static const yytype_int8 yydprec[] =
 {
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0
+       0,     0
 };
 
 /* YYMERGER[RULE-NUM] -- Index of merging function for rule #RULE-NUM.  */
@@ -602,7 +602,7 @@ static const yytype_int8 yymerger[] =
 {
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0
+       0,     0
 };
 
 /* YYIMMEDIATE[RULE-NUM] -- True iff rule #RULE-NUM is not to be deferred, as
@@ -611,7 +611,7 @@ static const yybool yyimmediate[] =
 {
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0
+       0,     0
 };
 
 /* YYCONFLP[YYPACT[STATE-NUM]] -- Pointer into YYCONFL of start of
@@ -854,9 +854,9 @@ static const char *const yytname[] =
   "SHL", "SHR", "ASS", "ASS_ADD", "ASS_SUB", "ASS_MUL", "ASS_DIV",
   "ASS_MOL", "ASS_SHL", "ASS_SHR", "ASS_BITAND", "ASS_BITOR", "ASS_BITXOR",
   "NOT", "AND", "OR", "XOR", "ADD", "SUB", "MUL", "DIV", "SUP", "QST",
-  "$accept", "doc", "doc.header", "doc.body", "modecl", "import", "$@1",
-  "import.package", "import.modules", "modesc", "enum", "enum.items",
-  "enumi", YY_NULLPTR
+  "$accept", "doc", "doc.header", "doc.body", "enum", "enum.items",
+  "enumi", "modecl", "import", "$@1", "import.package", "import.modules",
+  "modesc", YY_NULLPTR
 };
 
 static const char *
@@ -1195,133 +1195,52 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
   switch (yyn)
     {
   case 2: // doc: doc.header doc.body
-#line 84 "src/syntactic.ypp"
+#line 105 "../gen/syntactic.ypp"
                         {
         auto hdr = (st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval; auto res = new st_doc;
         hdr->outqueue((node_t&)res->modecl);
         for( auto import : *hdr ) res->imports.push((import_t)import);
         for( auto stmt : *(st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval ) res->body.push(stmt);
         (*yyvalp) = doc = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval); }
-#line 1206 "src/syntactic.cpp"
+#line 1206 "syntactic.cpp"
     break;
 
   case 3: // doc.header: modecl
-#line 92 "src/syntactic.ypp"
+#line 113 "../gen/syntactic.ypp"
            { 
         auto res = new st_nters(); 
         res->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
         (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1215 "src/syntactic.cpp"
+#line 1215 "syntactic.cpp"
     break;
 
   case 4: // doc.header: doc.header import
-#line 96 "src/syntactic.ypp"
+#line 117 "../gen/syntactic.ypp"
                         { 
         auto res = (st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval; 
         res->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
         (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1224 "src/syntactic.cpp"
+#line 1224 "syntactic.cpp"
     break;
 
   case 5: // doc.body: %empty
-#line 102 "src/syntactic.ypp"
+#line 123 "../gen/syntactic.ypp"
            {
         auto res = new st_nters();
         (*yyvalp) = res; }
-#line 1232 "src/syntactic.cpp"
+#line 1232 "syntactic.cpp"
     break;
 
   case 6: // doc.body: doc.body enum
-#line 105 "src/syntactic.ypp"
+#line 126 "../gen/syntactic.ypp"
                     {
         ((st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval)->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
         (*yyvalp) = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval; }
-#line 1240 "src/syntactic.cpp"
+#line 1240 "syntactic.cpp"
     break;
 
-  case 7: // modecl: MODULE ID
-#line 111 "src/syntactic.ypp"
-              { 
-        auto res = new st_modecl; 
-        res->name = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval; 
-        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
-        kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval); }
-#line 1250 "src/syntactic.cpp"
-    break;
-
-  case 8: // $@1: %empty
-#line 119 "src/syntactic.ypp"
-           { yylex.begin(Lexer::DEPENDENCY); }
-#line 1256 "src/syntactic.cpp"
-    break;
-
-  case 9: // import: IMPORT $@1 import.modules FROM import.package
-#line 119 "src/syntactic.ypp"
-                                                                                  { 
-        auto deps = (st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval;
-        auto res = new st_import;
-        res->from = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval;
-        for( auto dep : *deps )
-            res->modules.push((modesc_t)dep); 
-        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
-        kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
-        yylex.begin(Lexer::INITIAL); }
-#line 1270 "src/syntactic.cpp"
-    break;
-
-  case 12: // import.modules: modesc
-#line 132 "src/syntactic.ypp"
-           { 
-        auto res = new st_nters(); 
-        res->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
-        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1279 "src/syntactic.cpp"
-    break;
-
-  case 13: // import.modules: import.modules COMMA modesc
-#line 136 "src/syntactic.ypp"
-                                  { 
-        auto res = (st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval; 
-        res->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
-        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
-        kick( YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1289 "src/syntactic.cpp"
-    break;
-
-  case 14: // modesc: ID
-#line 143 "src/syntactic.ypp"
-       { 
-        auto res = new st_modesc; 
-        res->module = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval; 
-        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
-        kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1299 "src/syntactic.cpp"
-    break;
-
-  case 15: // modesc: ID AS ID
-#line 148 "src/syntactic.ypp"
-               { 
-        auto res = new st_modesc;
-        res->module = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval; 
-        res->alias = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval; 
-        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
-        kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1310 "src/syntactic.cpp"
-    break;
-
-  case 16: // modesc: ID AS THIS
-#line 154 "src/syntactic.ypp"
-                 { 
-        auto res = new st_modesc; 
-        res->module = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval; 
-        res->alias = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval; 
-        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
-        kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1321 "src/syntactic.cpp"
-    break;
-
-  case 17: // enum: ENUM ID OPB enum.items CLB
-#line 163 "src/syntactic.ypp"
+  case 7: // enum: ENUM ID OPB enum.items CLB
+#line 130 "../gen/syntactic.ypp"
                                {
         auto res = new st_enum;
         res->name = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yysval;
@@ -1330,57 +1249,127 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
         (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
         kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
     }
-#line 1334 "src/syntactic.cpp"
+#line 1253 "syntactic.cpp"
     break;
 
-  case 18: // enum.items: enumi
-#line 173 "src/syntactic.ypp"
+  case 8: // enum.items: enumi
+#line 140 "../gen/syntactic.ypp"
           {
         auto res = new st_nters();
         res->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
         (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1343 "src/syntactic.cpp"
+#line 1262 "syntactic.cpp"
     break;
 
-  case 19: // enum.items: enum.items enumi
-#line 177 "src/syntactic.ypp"
+  case 9: // enum.items: enum.items enumi
+#line 144 "../gen/syntactic.ypp"
                        {
         ((st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval)->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
         (*yyvalp) = fetch(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1351 "src/syntactic.cpp"
+#line 1270 "syntactic.cpp"
     break;
 
-  case 20: // enum.items: enum.items COMMA enumi
-#line 180 "src/syntactic.ypp"
+  case 10: // enum.items: enum.items COMMA enumi
+#line 147 "../gen/syntactic.ypp"
                              {
         ((st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval)->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
         (*yyvalp) = fetch(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
         kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval); }
-#line 1360 "src/syntactic.cpp"
+#line 1279 "syntactic.cpp"
     break;
 
-  case 21: // enumi: ID
-#line 186 "src/syntactic.ypp"
+  case 11: // enumi: ID
+#line 153 "../gen/syntactic.ypp"
        {
         auto res = new st_enumi;
         res->name = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval;
         (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
-#line 1369 "src/syntactic.cpp"
+#line 1288 "syntactic.cpp"
     break;
 
-  case 22: // enumi: ID ASS DECIMAL
-#line 190 "src/syntactic.ypp"
+  case 12: // enumi: ID ASS DECIMAL
+#line 157 "../gen/syntactic.ypp"
                      {
         auto res = new st_enumi;
         res->name = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval;
         res->value = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval;
         (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
         kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval); }
-#line 1380 "src/syntactic.cpp"
+#line 1299 "syntactic.cpp"
+    break;
+
+  case 13: // modecl: MODULE ID
+#line 164 "../gen/syntactic.ypp"
+              { 
+        auto res = new st_modecl; 
+        res->name = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval; 
+        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
+        kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval); }
+#line 1309 "syntactic.cpp"
+    break;
+
+  case 14: // $@1: %empty
+#line 171 "../gen/syntactic.ypp"
+           { yylex.begin(SC::DEPENDENCY); }
+#line 1315 "syntactic.cpp"
+    break;
+
+  case 15: // import: IMPORT $@1 import.modules FROM import.package
+#line 171 "../gen/syntactic.ypp"
+                                                                               { 
+        auto deps = (st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval;
+        auto res = new st_import;
+        res->from = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval;
+        for( auto dep : *deps )
+            res->modules.push((modesc_t)dep); 
+        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
+        kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
+        yylex.begin(SC::INITIAL); }
+#line 1329 "syntactic.cpp"
+    break;
+
+  case 18: // import.modules: modesc
+#line 184 "../gen/syntactic.ypp"
+           { 
+        auto res = new st_nters(); 
+        res->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
+        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
+#line 1338 "syntactic.cpp"
+    break;
+
+  case 19: // import.modules: import.modules COMMA modesc
+#line 188 "../gen/syntactic.ypp"
+                                  { 
+        auto res = (st_nters*)YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval; 
+        res->push(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
+        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
+        kick( YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
+#line 1348 "syntactic.cpp"
+    break;
+
+  case 20: // modesc: ID
+#line 195 "../gen/syntactic.ypp"
+       { 
+        auto res = new st_modesc; 
+        res->module = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval; 
+        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval);
+        kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
+#line 1358 "syntactic.cpp"
+    break;
+
+  case 21: // modesc: ID AS ID
+#line 200 "../gen/syntactic.ypp"
+               { 
+        auto res = new st_modesc;
+        res->module = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval; 
+        res->alias = YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval; 
+        (*yyvalp) = fetch(res, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); 
+        kick(YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yysval, YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yysval); }
+#line 1369 "syntactic.cpp"
     break;
 
 
-#line 1384 "src/syntactic.cpp"
+#line 1373 "syntactic.cpp"
 
       default: break;
     }
@@ -1442,519 +1431,519 @@ yydestruct (const char *yymsg,
   switch (yykind)
     {
     case S_SPACE: // SPACE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1448 "src/syntactic.cpp"
+#line 1437 "syntactic.cpp"
         break;
 
     case S_COMMENT: // COMMENT
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1454 "src/syntactic.cpp"
+#line 1443 "syntactic.cpp"
         break;
 
     case S_CONST: // CONST
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1460 "src/syntactic.cpp"
+#line 1449 "syntactic.cpp"
         break;
 
     case S_AS: // AS
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1466 "src/syntactic.cpp"
+#line 1455 "syntactic.cpp"
         break;
 
     case S_LET: // LET
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1472 "src/syntactic.cpp"
+#line 1461 "syntactic.cpp"
         break;
 
     case S_USE: // USE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1478 "src/syntactic.cpp"
+#line 1467 "syntactic.cpp"
         break;
 
     case S_IN: // IN
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1484 "src/syntactic.cpp"
+#line 1473 "syntactic.cpp"
         break;
 
     case S_IMPORT: // IMPORT
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1490 "src/syntactic.cpp"
+#line 1479 "syntactic.cpp"
         break;
 
     case S_FROM: // FROM
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1496 "src/syntactic.cpp"
+#line 1485 "syntactic.cpp"
         break;
 
     case S_CLASS: // CLASS
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1502 "src/syntactic.cpp"
+#line 1491 "syntactic.cpp"
         break;
 
     case S_ENUM: // ENUM
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1508 "src/syntactic.cpp"
+#line 1497 "syntactic.cpp"
         break;
 
     case S_UNIT: // UNIT
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1514 "src/syntactic.cpp"
+#line 1503 "syntactic.cpp"
         break;
 
     case S_INTERFACE: // INTERFACE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1520 "src/syntactic.cpp"
+#line 1509 "syntactic.cpp"
         break;
 
     case S_MODULE: // MODULE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1526 "src/syntactic.cpp"
+#line 1515 "syntactic.cpp"
         break;
 
     case S_IF: // IF
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1532 "src/syntactic.cpp"
+#line 1521 "syntactic.cpp"
         break;
 
     case S_ELSE: // ELSE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1538 "src/syntactic.cpp"
+#line 1527 "syntactic.cpp"
         break;
 
     case S_FOR: // FOR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1544 "src/syntactic.cpp"
+#line 1533 "syntactic.cpp"
         break;
 
     case S_WHILE: // WHILE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1550 "src/syntactic.cpp"
+#line 1539 "syntactic.cpp"
         break;
 
     case S_DO: // DO
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1556 "src/syntactic.cpp"
+#line 1545 "syntactic.cpp"
         break;
 
     case S_RETURN: // RETURN
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1562 "src/syntactic.cpp"
+#line 1551 "syntactic.cpp"
         break;
 
     case S_BREAK: // BREAK
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1568 "src/syntactic.cpp"
+#line 1557 "syntactic.cpp"
         break;
 
     case S_CONTINUE: // CONTINUE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1574 "src/syntactic.cpp"
+#line 1563 "syntactic.cpp"
         break;
 
     case S_PUBLIC: // PUBLIC
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1580 "src/syntactic.cpp"
+#line 1569 "syntactic.cpp"
         break;
 
     case S_PRIVATE: // PRIVATE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1586 "src/syntactic.cpp"
+#line 1575 "syntactic.cpp"
         break;
 
     case S_PROTECTED: // PROTECTED
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1592 "src/syntactic.cpp"
+#line 1581 "syntactic.cpp"
         break;
 
     case S_ID: // ID
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1598 "src/syntactic.cpp"
+#line 1587 "syntactic.cpp"
         break;
 
     case S_INTEGER: // INTEGER
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1604 "src/syntactic.cpp"
+#line 1593 "syntactic.cpp"
         break;
 
     case S_DECIMAL: // DECIMAL
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1610 "src/syntactic.cpp"
+#line 1599 "syntactic.cpp"
         break;
 
     case S_OCTAL: // OCTAL
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1616 "src/syntactic.cpp"
+#line 1605 "syntactic.cpp"
         break;
 
     case S_HEX: // HEX
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1622 "src/syntactic.cpp"
+#line 1611 "syntactic.cpp"
         break;
 
     case S_TRUE: // TRUE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1628 "src/syntactic.cpp"
+#line 1617 "syntactic.cpp"
         break;
 
     case S_FALSE: // FALSE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1634 "src/syntactic.cpp"
+#line 1623 "syntactic.cpp"
         break;
 
     case S_NULL: // NULL
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1640 "src/syntactic.cpp"
+#line 1629 "syntactic.cpp"
         break;
 
     case S_DQSTR: // DQSTR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1646 "src/syntactic.cpp"
+#line 1635 "syntactic.cpp"
         break;
 
     case S_SQSTR: // SQSTR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1652 "src/syntactic.cpp"
+#line 1641 "syntactic.cpp"
         break;
 
     case S_THIS: // THIS
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1658 "src/syntactic.cpp"
+#line 1647 "syntactic.cpp"
         break;
 
     case S_COMMA: // COMMA
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1664 "src/syntactic.cpp"
+#line 1653 "syntactic.cpp"
         break;
 
     case S_COLON: // COLON
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1670 "src/syntactic.cpp"
+#line 1659 "syntactic.cpp"
         break;
 
     case S_SEMI: // SEMI
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1676 "src/syntactic.cpp"
+#line 1665 "syntactic.cpp"
         break;
 
     case S_OPE: // OPE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1682 "src/syntactic.cpp"
+#line 1671 "syntactic.cpp"
         break;
 
     case S_CLE: // CLE
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1688 "src/syntactic.cpp"
+#line 1677 "syntactic.cpp"
         break;
 
     case S_OPI: // OPI
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1694 "src/syntactic.cpp"
+#line 1683 "syntactic.cpp"
         break;
 
     case S_CLI: // CLI
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1700 "src/syntactic.cpp"
+#line 1689 "syntactic.cpp"
         break;
 
     case S_OPB: // OPB
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1706 "src/syntactic.cpp"
+#line 1695 "syntactic.cpp"
         break;
 
     case S_CLB: // CLB
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1712 "src/syntactic.cpp"
+#line 1701 "syntactic.cpp"
         break;
 
     case S_DOT: // DOT
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1718 "src/syntactic.cpp"
+#line 1707 "syntactic.cpp"
         break;
 
     case S_ETC: // ETC
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1724 "src/syntactic.cpp"
+#line 1713 "syntactic.cpp"
         break;
 
     case S_MOL: // MOL
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1730 "src/syntactic.cpp"
+#line 1719 "syntactic.cpp"
         break;
 
     case S_BITAND: // BITAND
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1736 "src/syntactic.cpp"
+#line 1725 "syntactic.cpp"
         break;
 
     case S_BITOR: // BITOR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1742 "src/syntactic.cpp"
+#line 1731 "syntactic.cpp"
         break;
 
     case S_BITXOR: // BITXOR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1748 "src/syntactic.cpp"
+#line 1737 "syntactic.cpp"
         break;
 
     case S_BITNOT: // BITNOT
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1754 "src/syntactic.cpp"
+#line 1743 "syntactic.cpp"
         break;
 
     case S_SHL: // SHL
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1760 "src/syntactic.cpp"
+#line 1749 "syntactic.cpp"
         break;
 
     case S_SHR: // SHR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1766 "src/syntactic.cpp"
+#line 1755 "syntactic.cpp"
         break;
 
     case S_ASS: // ASS
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1772 "src/syntactic.cpp"
+#line 1761 "syntactic.cpp"
         break;
 
     case S_ASS_ADD: // ASS_ADD
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1778 "src/syntactic.cpp"
+#line 1767 "syntactic.cpp"
         break;
 
     case S_ASS_SUB: // ASS_SUB
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1784 "src/syntactic.cpp"
+#line 1773 "syntactic.cpp"
         break;
 
     case S_ASS_MUL: // ASS_MUL
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1790 "src/syntactic.cpp"
+#line 1779 "syntactic.cpp"
         break;
 
     case S_ASS_DIV: // ASS_DIV
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1796 "src/syntactic.cpp"
+#line 1785 "syntactic.cpp"
         break;
 
     case S_ASS_MOL: // ASS_MOL
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1802 "src/syntactic.cpp"
+#line 1791 "syntactic.cpp"
         break;
 
     case S_ASS_SHL: // ASS_SHL
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1808 "src/syntactic.cpp"
+#line 1797 "syntactic.cpp"
         break;
 
     case S_ASS_SHR: // ASS_SHR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1814 "src/syntactic.cpp"
+#line 1803 "syntactic.cpp"
         break;
 
     case S_ASS_BITAND: // ASS_BITAND
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1820 "src/syntactic.cpp"
+#line 1809 "syntactic.cpp"
         break;
 
     case S_ASS_BITOR: // ASS_BITOR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1826 "src/syntactic.cpp"
+#line 1815 "syntactic.cpp"
         break;
 
     case S_ASS_BITXOR: // ASS_BITXOR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1832 "src/syntactic.cpp"
+#line 1821 "syntactic.cpp"
         break;
 
     case S_NOT: // NOT
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1838 "src/syntactic.cpp"
+#line 1827 "syntactic.cpp"
         break;
 
     case S_AND: // AND
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1844 "src/syntactic.cpp"
+#line 1833 "syntactic.cpp"
         break;
 
     case S_OR: // OR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1850 "src/syntactic.cpp"
+#line 1839 "syntactic.cpp"
         break;
 
     case S_XOR: // XOR
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1856 "src/syntactic.cpp"
+#line 1845 "syntactic.cpp"
         break;
 
     case S_ADD: // ADD
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1862 "src/syntactic.cpp"
+#line 1851 "syntactic.cpp"
         break;
 
     case S_SUB: // SUB
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1868 "src/syntactic.cpp"
+#line 1857 "syntactic.cpp"
         break;
 
     case S_MUL: // MUL
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1874 "src/syntactic.cpp"
+#line 1863 "syntactic.cpp"
         break;
 
     case S_DIV: // DIV
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1880 "src/syntactic.cpp"
+#line 1869 "syntactic.cpp"
         break;
 
     case S_SUP: // SUP
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1886 "src/syntactic.cpp"
+#line 1875 "syntactic.cpp"
         break;
 
     case S_QST: // QST
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1892 "src/syntactic.cpp"
+#line 1881 "syntactic.cpp"
         break;
 
     case S_doc: // doc
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1898 "src/syntactic.cpp"
+#line 1887 "syntactic.cpp"
         break;
 
     case S_80_doc_header: // doc.header
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1904 "src/syntactic.cpp"
+#line 1893 "syntactic.cpp"
         break;
 
     case S_81_doc_body: // doc.body
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1910 "src/syntactic.cpp"
-        break;
-
-    case S_modecl: // modecl
-#line 51 "src/syntactic.ypp"
-            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1916 "src/syntactic.cpp"
-        break;
-
-    case S_import: // import
-#line 51 "src/syntactic.ypp"
-            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1922 "src/syntactic.cpp"
-        break;
-
-    case S_85_import_package: // import.package
-#line 51 "src/syntactic.ypp"
-            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1928 "src/syntactic.cpp"
-        break;
-
-    case S_86_import_modules: // import.modules
-#line 51 "src/syntactic.ypp"
-            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1934 "src/syntactic.cpp"
-        break;
-
-    case S_modesc: // modesc
-#line 51 "src/syntactic.ypp"
-            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1940 "src/syntactic.cpp"
+#line 1899 "syntactic.cpp"
         break;
 
     case S_enum: // enum
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1946 "src/syntactic.cpp"
+#line 1905 "syntactic.cpp"
         break;
 
-    case S_89_enum_items: // enum.items
-#line 51 "src/syntactic.ypp"
+    case S_83_enum_items: // enum.items
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1952 "src/syntactic.cpp"
+#line 1911 "syntactic.cpp"
         break;
 
     case S_enumi: // enumi
-#line 51 "src/syntactic.ypp"
+#line 69 "../gen/syntactic.ypp"
             { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
-#line 1958 "src/syntactic.cpp"
+#line 1917 "syntactic.cpp"
+        break;
+
+    case S_modecl: // modecl
+#line 69 "../gen/syntactic.ypp"
+            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
+#line 1923 "syntactic.cpp"
+        break;
+
+    case S_import: // import
+#line 69 "../gen/syntactic.ypp"
+            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
+#line 1929 "syntactic.cpp"
+        break;
+
+    case S_88_import_package: // import.package
+#line 69 "../gen/syntactic.ypp"
+            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
+#line 1935 "syntactic.cpp"
+        break;
+
+    case S_89_import_modules: // import.modules
+#line 69 "../gen/syntactic.ypp"
+            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
+#line 1941 "syntactic.cpp"
+        break;
+
+    case S_modesc: // modesc
+#line 69 "../gen/syntactic.ypp"
+            { {if( (*yyvaluep) ) { node_t node = (*yyvaluep);} } }
+#line 1947 "syntactic.cpp"
         break;
 
       default:
@@ -3404,11 +3393,11 @@ yy_parse_impl (alioth::Parser& yyparser, alioth::Lexer& yylex, alioth::doc_t& do
 
   // User initialization code.
 yylloc.initialize ();
-#line 48 "src/syntactic.ypp"
+#line 66 "../gen/syntactic.ypp"
 {
 }
 
-#line 3412 "src/syntactic.cpp"
+#line 3401 "syntactic.cpp"
 
 
   if (! yyinitGLRStack (yystackp, YYINITDEPTH))
@@ -3698,7 +3687,7 @@ yypdumpstack (yyGLRStack* yystackp)
 
 
 
-#line 3702 "src/syntactic.cpp"
+#line 3691 "syntactic.cpp"
 
 /*------------------.
 | Report an error.  |
@@ -3716,9 +3705,9 @@ yyerror (const alioth::Parser::location_type *yylocationp,
 }
 
 
-#line 55 "src/syntactic.ypp"
+#line 73 "../gen/syntactic.ypp"
 namespace alioth {
-#line 3722 "src/syntactic.cpp"
+#line 3711 "syntactic.cpp"
 
   /// Build a parser object.
   Parser::Parser (alioth::Lexer& yylex_yyarg, alioth::doc_t& doc_yyarg)
@@ -3806,9 +3795,9 @@ namespace alioth {
   }
 
 #endif
-#line 55 "src/syntactic.ypp"
+#line 73 "../gen/syntactic.ypp"
 } // alioth
-#line 3812 "src/syntactic.cpp"
+#line 3801 "syntactic.cpp"
 
 #undef TK_YYEMPTY
 #undef TK_YYEOF
@@ -3897,17 +3886,17 @@ namespace alioth {
 #undef S_doc
 #undef S_80_doc_header
 #undef S_81_doc_body
+#undef S_enum
+#undef S_83_enum_items
+#undef S_enumi
 #undef S_modecl
 #undef S_import
-#undef S_84_1
-#undef S_85_import_package
-#undef S_86_import_modules
+#undef S_87_1
+#undef S_88_import_package
+#undef S_89_import_modules
 #undef S_modesc
-#undef S_enum
-#undef S_89_enum_items
-#undef S_enumi
 
-#line 197 "src/syntactic.ypp"
+#line 208 "../gen/syntactic.ypp"
 
 
 namespace alioth {

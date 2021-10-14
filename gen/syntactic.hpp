@@ -36,10 +36,10 @@
 // especially those whose name start with YY_ or yy_.  They are
 // private implementation details that can be changed or removed.
 
-#ifndef YY_YY_INC_SYNTACTIC_HPP_INCLUDED
-# define YY_YY_INC_SYNTACTIC_HPP_INCLUDED
+#ifndef YY_YY_SYNTACTIC_HPP_INCLUDED
+# define YY_YY_SYNTACTIC_HPP_INCLUDED
 // "%code requires" blocks.
-#line 6 "src/syntactic.ypp"
+#line 6 "../gen/syntactic.ypp"
 
 #include "syntax.hpp"
 #include "token.hpp"
@@ -48,7 +48,7 @@ namespace alioth {
 class Lexer;
 }
 
-#line 52 "inc/syntactic.hpp"
+#line 52 "syntactic.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -90,7 +90,7 @@ class Lexer;
 #else
 # define YY_CONSTEXPR
 #endif
-# include "../inc/location.hpp"
+# include "location.hpp"
 
 
 #ifndef YY_ATTRIBUTE_PURE
@@ -188,9 +188,9 @@ class Lexer;
 # define YYDEBUG 0
 #endif
 
-#line 55 "src/syntactic.ypp"
+#line 73 "../gen/syntactic.ypp"
 namespace alioth {
-#line 194 "inc/syntactic.hpp"
+#line 194 "syntactic.hpp"
 
 
 
@@ -410,15 +410,15 @@ namespace alioth {
         S_doc = 79,                              // doc
         S_80_doc_header = 80,                    // doc.header
         S_81_doc_body = 81,                      // doc.body
-        S_modecl = 82,                           // modecl
-        S_import = 83,                           // import
-        S_84_1 = 84,                             // $@1
-        S_85_import_package = 85,                // import.package
-        S_86_import_modules = 86,                // import.modules
-        S_modesc = 87,                           // modesc
-        S_enum = 88,                             // enum
-        S_89_enum_items = 89,                    // enum.items
-        S_enumi = 90                             // enumi
+        S_enum = 82,                             // enum
+        S_83_enum_items = 83,                    // enum.items
+        S_enumi = 84,                            // enumi
+        S_modecl = 85,                           // modecl
+        S_import = 86,                           // import
+        S_87_1 = 87,                             // $@1
+        S_88_import_package = 88,                // import.package
+        S_89_import_modules = 89,                // import.modules
+        S_modesc = 90                            // modesc
       };
     };
 
@@ -487,23 +487,41 @@ namespace alioth {
     alioth::doc_t& doc;
   };
 
-#line 55 "src/syntactic.ypp"
+#line 73 "../gen/syntactic.ypp"
 } // alioth
-#line 493 "inc/syntactic.hpp"
+#line 493 "syntactic.hpp"
 
 
 // "%code provides" blocks.
-#line 15 "src/syntactic.ypp"
+#line 15 "../gen/syntactic.ypp"
 
 namespace alioth {
+
+    /** Start Condition, 由语法分析器用于修改词法分析器语境 */
+    enum class SC {
+        INITIAL,
+        /** @MARK[SC] */
+        DEPENDENCY,
+        EXPRESSION,
+    };
+
+    /** 终结符ID */
     using VT = Parser::token_kind_type;
+
+    /** 非终结符ID */
     using VN = Parser::symbol_kind_type;
+
+    /** 获取终结符记号名称 */
     std::string kind_name( alioth::VT t );
+
+    /** 获取非终结符记号名称 */
     std::string kind_name( alioth::VN n );
+
+    /** 获取终结符或非终结符记号名称 */
     std::string kind_name( int i );
 }
 
-#line 507 "inc/syntactic.hpp"
+#line 525 "syntactic.hpp"
 
 
-#endif // !YY_YY_INC_SYNTACTIC_HPP_INCLUDED
+#endif // !YY_YY_SYNTACTIC_HPP_INCLUDED

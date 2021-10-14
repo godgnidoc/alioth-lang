@@ -14,10 +14,28 @@ class Lexer;
 
 %code provides {
 namespace alioth {
+
+    /** Start Condition, 由语法分析器用于修改词法分析器语境 */
+    enum class SC {
+        INITIAL,
+        /** @MARK[SC] */
+        DEPENDENCY,
+        EXPRESSION,
+    };
+
+    /** 终结符ID */
     using VT = Parser::token_kind_type;
+
+    /** 非终结符ID */
     using VN = Parser::symbol_kind_type;
+
+    /** 获取终结符记号名称 */
     std::string kind_name( alioth::VT t );
+
+    /** 获取非终结符记号名称 */
     std::string kind_name( alioth::VN n );
+
+    /** 获取终结符或非终结符记号名称 */
     std::string kind_name( int i );
 }
 }
@@ -38,8 +56,8 @@ st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 %glr-parser
 %language "C++"
 %require "3.7"
-%defines "inc/syntactic.hpp"
-%output "src/syntactic.cpp"
+%defines "syntactic.hpp"
+%output "syntactic.cpp"
 %token-table
 %locations
 
@@ -50,7 +68,7 @@ st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 
 %destructor { {if( $$ ) { node_t node = $$;} } } <>
 
-%define api.location.file "../inc/location.hpp"
+%define api.location.file "location.hpp"
 %define api.parser.class {Parser}
 %define api.namespace {alioth}
 %define api.value.type {st_node*}
@@ -78,9 +96,11 @@ st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 %left MUL DIV MOL
 %nonassoc SUP QST
 %left DOT
+
+%start doc
+
 %%
 
-/** 文档总体结构 */
 doc:
     doc.header doc.body {
         auto hdr = (st_nters*)$1; auto res = new st_doc;
@@ -106,54 +126,6 @@ doc.body:
     | doc.body enum {
         ((st_nters*)$1)->push($2);
         $$ = $1; };
-
-/** 模块声明 */
-modecl:
-    MODULE ID { 
-        auto res = new st_modecl; 
-        res->name = $2; 
-        $$ = fetch(res, $1, $2); 
-        kick($1); };
-
-/** 模块依赖 */
-import:
-    IMPORT { yylex.begin(Lexer::DEPENDENCY); } import.modules FROM import.package { 
-        auto deps = (st_nters*)$3;
-        auto res = new st_import;
-        res->from = $5;
-        for( auto dep : *deps )
-            res->modules.push((modesc_t)dep); 
-        $$ = fetch(res, $1, $5); 
-        kick($1, $4, $5);
-        yylex.begin(Lexer::INITIAL); };
-
-import.package: DQSTR | SQSTR;
-
-import.modules:
-    modesc { 
-        auto res = new st_nters(); 
-        res->push($1); 
-        $$ = fetch(res, $1, $1); }
-    | import.modules COMMA modesc { 
-        auto res = (st_nters*)$1; 
-        res->push($3); 
-        $$ = fetch(res, $1, $3);
-        kick( $2, $3); };
-
-modesc:
-    ID { 
-        auto res = new st_modesc; 
-        res->module = $1; 
-        $$ = fetch(res, $1, $1);
-        kick($1); }
-    | ID AS ID { 
-        auto res = new st_modesc;
-        res->module = $1; 
-        res->alias = $3; 
-        $$ = fetch(res, $1, $3); 
-        kick($1, $2, $3); };
-
-/** 枚举定义 */
 enum:
     ENUM ID OPB enum.items CLB {
         auto res = new st_enum;
@@ -188,6 +160,50 @@ enumi:
         res->value = $3;
         $$ = fetch(res, $1, $3);
         kick($2); };
+modecl:
+    MODULE ID { 
+        auto res = new st_modecl; 
+        res->name = $2; 
+        $$ = fetch(res, $1, $2); 
+        kick($1); };
+
+import:
+    IMPORT { yylex.begin(SC::DEPENDENCY); } import.modules FROM import.package { 
+        auto deps = (st_nters*)$3;
+        auto res = new st_import;
+        res->from = $5;
+        for( auto dep : *deps )
+            res->modules.push((modesc_t)dep); 
+        $$ = fetch(res, $1, $5); 
+        kick($1, $4, $5);
+        yylex.begin(SC::INITIAL); };
+
+import.package: DQSTR | SQSTR;
+
+import.modules:
+    modesc { 
+        auto res = new st_nters(); 
+        res->push($1); 
+        $$ = fetch(res, $1, $1); }
+    | import.modules COMMA modesc { 
+        auto res = (st_nters*)$1; 
+        res->push($3); 
+        $$ = fetch(res, $1, $3);
+        kick( $2, $3); };
+
+modesc:
+    ID { 
+        auto res = new st_modesc; 
+        res->module = $1; 
+        $$ = fetch(res, $1, $1);
+        kick($1); }
+    | ID AS ID { 
+        auto res = new st_modesc;
+        res->module = $1; 
+        res->alias = $3; 
+        $$ = fetch(res, $1, $3); 
+        kick($1, $2, $3); };
+/** @MARK[RULE] */
 
 %%
 

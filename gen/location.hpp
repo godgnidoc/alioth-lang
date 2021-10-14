@@ -31,12 +31,12 @@
 // version 2.2 of Bison.
 
 /**
- ** \file src/../inc/location.hpp
+ ** \file location.hpp
  ** Define the alioth::location class.
  */
 
-#ifndef YY_YY_SRC_INC_LOCATION_HPP_INCLUDED
-# define YY_YY_SRC_INC_LOCATION_HPP_INCLUDED
+#ifndef YY_YY_LOCATION_HPP_INCLUDED
+# define YY_YY_LOCATION_HPP_INCLUDED
 
 # include <iostream>
 # include <string>
@@ -53,9 +53,9 @@
 #  endif
 # endif
 
-#line 55 "src/syntactic.ypp"
+#line 73 "../gen/syntactic.ypp"
 namespace alioth {
-#line 59 "src/../inc/location.hpp"
+#line 59 "location.hpp"
 
   /// A point in a source file.
   class position
@@ -268,8 +268,8 @@ namespace alioth {
     return ostr;
   }
 
-#line 55 "src/syntactic.ypp"
+#line 73 "../gen/syntactic.ypp"
 } // alioth
-#line 274 "src/../inc/location.hpp"
+#line 274 "location.hpp"
 
-#endif // !YY_YY_SRC_INC_LOCATION_HPP_INCLUDED
+#endif // !YY_YY_LOCATION_HPP_INCLUDED

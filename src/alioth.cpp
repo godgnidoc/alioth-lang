@@ -13,12 +13,12 @@ cli::application compiler;
 
 int main(int argc, char **argv) {
     compiler.name = "alioth";
-    compiler.version = "1.0.0";
+    compiler.version = __VERSION;
     compiler.author = "godgnidoc";
     compiler.email = "godgnidoc@gmail.com";
     compiler.brief = "compiler of the Alioth programming language";
-    compiler.arch = "x86_64";
-    compiler.os = "Linux";
+    compiler.arch = __ARCH;
+    compiler.os = __OS;
     compiler.cert = "MIT";
 
     compiler.regist_main_function((cli::function){

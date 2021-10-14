@@ -5,17 +5,30 @@
 
 #include <iostream>
 #include <map>
+#include <set>
 
 /** 词法分析器上下文 */
 struct lexer_impl {
-  size_t line;
-  size_t column;
-  std::istream& is;
+  /** @todo fname 当前文件名 */
+  size_t line; // 当前行
+  size_t column; // 当前列
+  std::istream& is; // 当前输入流
 };
 
-/** 根据单词计算偏移量 */
-void gincrement(lexer_impl*, const std::string&);
-alioth::token mktoken( lexer_impl* impl, int id, const std::string& = "" );
+/** 
+ * 根据单词计算偏移量，运算结果作用于上下文
+ * @param impl 词法分析器上下文
+ * @param term 单词
+ */
+void gincrement(lexer_impl* impl, const std::string& term);
+
+/**
+ * 使用当前上下文构造并返回一个词法记号
+ * @param impl 词法分析器上下文
+ * @param id 词法记号id
+ * @param tx 词法记号文本内容
+ */
+alioth::token mktoken( lexer_impl* impl, int id, const std::string& tx = "" );
 
 /** 词法分析算返回0表示正常结束，返回非零表示其他情况 */
 #define YY_DECL alioth::token do_scan( yyscan_t yyscanner )
@@ -31,14 +44,19 @@ alioth::token mktoken( lexer_impl* impl, int id, const std::string& = "" );
 
 %}
 
+/** @note 不需要yywrap函数 */
 %option noyywrap
+
+/** @note 词法分析器需要可重入 */
 %option reentrant
+
+/** @note 扩展数据结构用于存储此法分析器上下文 */
 %option extra-type="lexer_impl*"
 
-/** 正在分析模块依赖 */
+/** StartCondition，正在分析模块依赖 */
 %s DEPENDENCY
 
-/** 正在分析表达式 */
+/** StartCondition，正在分析表达式 */
 %s EXPRESSION
 
 DIGIT [[:digit:]]
@@ -136,8 +154,8 @@ this                          {EMITTOKEN(alioth::VT::TK_THIS);}
 \/\/.*                        {EMITTOKEN(alioth::VT::TK_COMMENT);}
 \/\*(.|\n)*\*\/               {EMITTOKEN(alioth::VT::TK_COMMENT);}
 {DIGIT}+[[:alpha:]]+          {EMITTOKEN(alioth::VT::TK_YYUNDEF);}
-<<EOF>>                       { EMITTOKEN(alioth::VT::TK_YYEOF); }
-.                             { EMITTOKEN(alioth::VT::TK_YYUNDEF); }
+<<EOF>>                       {EMITTOKEN(alioth::VT::TK_YYEOF);}
+.                             {EMITTOKEN(alioth::VT::TK_YYUNDEF);}
 %%
 
 /** 根据当前分析内容构建记号 */
@@ -145,6 +163,7 @@ alioth::token mktoken( lexer_impl* impl, int id, const std::string& tx ) {
   alioth::token t;
   t.id =(int)id;
   t.tx = tx;
+  /** @todo 添加当前词法记号所属的文件 */
   t.loc.initialize();
   t.loc.begin.line = impl->line;
   t.loc.begin.column = impl->column;
@@ -155,6 +174,7 @@ alioth::token mktoken( lexer_impl* impl, int id, const std::string& tx ) {
 }
 
 namespace alioth {
+  /** 获取词法记号的kind name，单词表从语法规定文件生成，故此函数由语法模块定义 */
   std::string kind_name( alioth::VT id );
 
   Lexer::Lexer(std::istream& is) {
@@ -185,14 +205,16 @@ namespace alioth {
       token = parse();
       /* std::cout << kindname(token.id) << " " << token.tx << std::endl; */
     } while( token.id == VT::TK_SPACE || token.id == VT::TK_COMMENT);
-    *ploc = token.loc;
-    *ppnode = new st_term(token);
+    if( ploc)
+      *ploc = token.loc;
+    if( ppnode )
+      *ppnode = new st_term(token);
     return token.id;
   }
 
   void Lexer::begin( SC sc ) {
     auto yyg = (yyguts_t *)m_impl;
-    BEGIN(sc);
+    BEGIN((int)sc);
   }
 
   std::string Lexer::kindname( int id ) {

@@ -1,6 +1,6 @@
 %code top {
 #include "syntactic.hpp"
-#include "lexical.hpp"
+#include "lexer.hpp"
 }
 
 %code requires {
@@ -48,7 +48,6 @@ namespace alioth {
 
 using namespace alioth;
 
-st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 }
 
 %glr-parser
@@ -67,6 +66,7 @@ st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 %destructor { {if( $$ ) { node_t node = $$;} } } <>
 
 %define api.location.file "location.hpp"
+%define api.filename.type {const std::string}
 %define api.parser.class {Parser}
 %define api.namespace {alioth}
 %define api.value.type {st_node*}
@@ -95,6 +95,7 @@ st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 %nonassoc SUP QST
 %left DOT
 
+/** 生成式入口为doc语法结构 */
 %start doc
 
 %%
@@ -118,12 +119,4 @@ namespace alioth {
     void Parser::error( const location_type& loc, const std::string& msg ) {
         std::cerr << loc << ' ' << msg << std::endl;
     }
-}
-
-st_node* fetch( st_node* res, st_node* lhs, st_node* rhs) {
-    if( lhs )
-        res->loc = lhs->loc;
-    if( rhs )
-        res->loc += rhs->loc;
-    return res;
 }

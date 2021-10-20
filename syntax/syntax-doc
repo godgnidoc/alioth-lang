@@ -1,25 +1,30 @@
 doc:
     doc.header doc.body {
-        auto hdr = (st_nters*)$1; auto res = new st_doc;
-        hdr->outqueue((node_t&)res->modecl);
-        for( auto import : *hdr ) res->imports.push((import_t)import);
-        for( auto stmt : *(st_nters*)$2 ) res->body.push(stmt);
-        $$ = doc = fetch(res, $1); };
+        auto hdr = (st_nters*)$1; doc = new st_doc;
+        hdr->outqueue((node_t&)doc->modecl);
+        for( auto import : *hdr ) doc->imports.push((import_t)import);
+        for( auto stmt : *(st_nters*)$2 ) doc->body.push(stmt);
+        doc->loc = @$;
+        $$ = doc; };
 
 doc.header:
     modecl { 
         auto res = new st_nters(); 
         res->push($1); 
-        $$ = fetch(res, $1); }
+        res->loc = @$;
+        $$ = res; }
     | doc.header import { 
         auto res = (st_nters*)$1; 
         res->push($2); 
-        $$ = fetch(res, $1, $2); };
+        res->loc = @$;
+        $$ = res; };
 
 doc.body:
     %empty {
         auto res = new st_nters();
+        res->loc = @$;
         $$ = res; }
     | doc.body enum {
         ((st_nters*)$1)->push($2);
+        $1->loc = @$;
         $$ = $1; };

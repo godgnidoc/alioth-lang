@@ -30,7 +30,8 @@ using node_t = agent<st_node>;
 /** 将语法树结构打印为源代码 */
 std::ostream& operator<<(std::ostream&, const st_node&);
 
-/** 语法树上的终结符 */
+/** 语法树上的终结符
+ * 用于从词法分析器交接词法记号 */
 struct st_term : public st_node {
     st_term(const token&);
     st_term(token&&);

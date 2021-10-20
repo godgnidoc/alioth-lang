@@ -1,6 +1,6 @@
 %code top {
 #include "syntactic.hpp"
-#include "lexical.hpp"
+#include "lexer.hpp"
 }
 
 %code requires {
@@ -50,7 +50,6 @@ namespace alioth {
 
 using namespace alioth;
 
-st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 }
 
 %glr-parser
@@ -69,6 +68,7 @@ st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 %destructor { {if( $$ ) { node_t node = $$;} } } <>
 
 %define api.location.file "location.hpp"
+%define api.filename.type {const std::string}
 %define api.parser.class {Parser}
 %define api.namespace {alioth}
 %define api.value.type {st_node*}
@@ -97,34 +97,40 @@ st_node* fetch( st_node* res, st_node* lhs = nullptr, st_node* rhs = nullptr);
 %nonassoc SUP QST
 %left DOT
 
+/** 生成式入口为doc语法结构 */
 %start doc
 
 %%
 
 doc:
     doc.header doc.body {
-        auto hdr = (st_nters*)$1; auto res = new st_doc;
-        hdr->outqueue((node_t&)res->modecl);
-        for( auto import : *hdr ) res->imports.push((import_t)import);
-        for( auto stmt : *(st_nters*)$2 ) res->body.push(stmt);
-        $$ = doc = fetch(res, $1); };
+        auto hdr = (st_nters*)$1; doc = new st_doc;
+        hdr->outqueue((node_t&)doc->modecl);
+        for( auto import : *hdr ) doc->imports.push((import_t)import);
+        for( auto stmt : *(st_nters*)$2 ) doc->body.push(stmt);
+        doc->loc = @$;
+        $$ = doc; };
 
 doc.header:
     modecl { 
         auto res = new st_nters(); 
         res->push($1); 
-        $$ = fetch(res, $1); }
+        res->loc = @$;
+        $$ = res; }
     | doc.header import { 
         auto res = (st_nters*)$1; 
         res->push($2); 
-        $$ = fetch(res, $1, $2); };
+        res->loc = @$;
+        $$ = res; };
 
 doc.body:
     %empty {
         auto res = new st_nters();
+        res->loc = @$;
         $$ = res; }
     | doc.body enum {
         ((st_nters*)$1)->push($2);
+        $1->loc = @$;
         $$ = $1; };
 enum:
     ENUM ID OPB enum.items CLB {
@@ -132,7 +138,8 @@ enum:
         res->name = $2;
         for( auto enumi : *(st_nters*)$4 )
             res->items.push((enumi_t)enumi);
-        $$ = fetch(res, $1, $5);
+            res->loc = @$;
+        $$ = res;
         kick($1, $2, $3, $4, $5);
     };
 
@@ -140,31 +147,37 @@ enum.items:
     enumi {
         auto res = new st_nters();
         res->push($1);
-        $$ = fetch(res, $1); }
+        res->loc = @$;
+        $$ = res; }
     | enum.items enumi {
         ((st_nters*)$1)->push($2);
-        $$ = fetch($1, $1, $2); }
+        $1->loc = @$;
+        $$ = $1; }
     | enum.items COMMA enumi {
         ((st_nters*)$1)->push($3);
-        $$ = fetch($1, $1, $3);
+        $1->loc = @$;
+        $$ = $1;
         kick($2); };
 
 enumi:
     ID {
         auto res = new st_enumi;
         res->name = $1;
-        $$ = fetch(res, $1); }
+        res->loc = @$;
+        $$ = res; }
     | ID ASS DECIMAL {
         auto res = new st_enumi;
         res->name = $1;
         res->value = $3;
-        $$ = fetch(res, $1, $3);
+        res->loc = @$;
+        $$ = res;
         kick($2); };
 modecl:
     MODULE ID { 
         auto res = new st_modecl; 
         res->name = $2; 
-        $$ = fetch(res, $1, $2); 
+        res->loc = @$;
+        $$ = res; 
         kick($1); };
 
 import:
@@ -174,7 +187,8 @@ import:
         res->from = $5;
         for( auto dep : *deps )
             res->modules.push((modesc_t)dep); 
-        $$ = fetch(res, $1, $5); 
+            res->loc = @$;
+        $$ = res; 
         kick($1, $4, $5);
         yylex.begin(SC::INITIAL); };
 
@@ -184,24 +198,28 @@ import.modules:
     modesc { 
         auto res = new st_nters(); 
         res->push($1); 
-        $$ = fetch(res, $1, $1); }
+        res->loc = @$;
+        $$ = res; }
     | import.modules COMMA modesc { 
         auto res = (st_nters*)$1; 
         res->push($3); 
-        $$ = fetch(res, $1, $3);
+        res->loc = @$;
+        $$ = res;
         kick( $2, $3); };
 
 modesc:
     ID { 
         auto res = new st_modesc; 
         res->module = $1; 
-        $$ = fetch(res, $1, $1);
+        res->loc = @$;
+        $$ = res;
         kick($1); }
     | ID AS ID { 
         auto res = new st_modesc;
         res->module = $1; 
         res->alias = $3; 
-        $$ = fetch(res, $1, $3); 
+        res->loc = @$;
+        $$ = res; 
         kick($1, $2, $3); };
 /** @MARK[RULE] */
 
@@ -222,12 +240,4 @@ namespace alioth {
     void Parser::error( const location_type& loc, const std::string& msg ) {
         std::cerr << loc << ' ' << msg << std::endl;
     }
-}
-
-st_node* fetch( st_node* res, st_node* lhs, st_node* rhs) {
-    if( lhs )
-        res->loc = lhs->loc;
-    if( rhs )
-        res->loc += rhs->loc;
-    return res;
 }

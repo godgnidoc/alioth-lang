@@ -1,5 +1,5 @@
 %{
-#include "lexical.hpp"
+#include "lexer.hpp"
 #include "syntactic.hpp"
 #include "syntax.hpp"
 
@@ -13,6 +13,7 @@ struct lexer_impl {
   size_t line; // 当前行
   size_t column; // 当前列
   std::istream& is; // 当前输入流
+  const std::string* source; // 源文件名
 };
 
 /** 
@@ -165,6 +166,7 @@ alioth::token mktoken( lexer_impl* impl, int id, const std::string& tx ) {
   t.tx = tx;
   /** @todo 添加当前词法记号所属的文件 */
   t.loc.initialize();
+  t.loc.begin.filename = t.loc.end.filename = impl->source;
   t.loc.begin.line = impl->line;
   t.loc.begin.column = impl->column;
   gincrement(impl, t.tx);
@@ -177,11 +179,12 @@ namespace alioth {
   /** 获取词法记号的kind name，单词表从语法规定文件生成，故此函数由语法模块定义 */
   std::string kind_name( alioth::VT id );
 
-  Lexer::Lexer(std::istream& is) {
+  Lexer::Lexer(std::istream& is, const std::string* source) {
     auto impl = new lexer_impl{
       line: 1,
       column: 1,
-      is:is
+      is:is,
+      source: source
     };
     yylex_init_extra(impl, &m_impl);
   }
@@ -203,7 +206,6 @@ namespace alioth {
     token token;
     do {
       token = parse();
-      /* std::cout << kindname(token.id) << " " << token.tx << std::endl; */
     } while( token.id == VT::TK_SPACE || token.id == VT::TK_COMMENT);
     if( ploc)
       *ploc = token.loc;

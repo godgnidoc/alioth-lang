@@ -9,6 +9,8 @@
 
 namespace alioth {
 
+/**
+ * 词法记号基类 */
 class token {
    public:
     int id;

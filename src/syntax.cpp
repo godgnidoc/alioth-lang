@@ -1,3 +1,6 @@
+#ifndef __impl_syntax__
+#define __impl_syntax__
+
 #include "syntax.hpp"
 
 #include "str.hpp"
@@ -23,7 +26,7 @@ st_node::~st_node() {}
 
 st_term::st_term(const token& t) : st_node(t) {}
 st_term::st_term(token&& t) : st_node(t) {}
-std::ostream& st_term::print(std::ostream& os, int indent) const { return os << tx; }
+std::ostream& st_term::print(std::ostream& os, int indent) const { return os << written(); }
 
 std::ostream& st_nters::print(std::ostream& os, int indent) const {
     for (auto& item : *this) item->print(os, indent);
@@ -79,3 +82,5 @@ std::ostream& st_enum::print(std::ostream& os, int indent) const {
     return os;
 }
 }  // namespace alioth
+
+#endif

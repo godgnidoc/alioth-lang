@@ -90,7 +90,7 @@ class Lexer;
 #else
 # define YY_CONSTEXPR
 #endif
-# include "location.hpp"
+
 
 
 #ifndef YY_ATTRIBUTE_PURE
@@ -188,7 +188,7 @@ class Lexer;
 # define YYDEBUG 0
 #endif
 
-#line 73 "../gen/syntactic.ypp"
+#line 70 "../gen/syntactic.ypp"
 namespace alioth {
 #line 194 "syntactic.hpp"
 
@@ -205,25 +205,19 @@ namespace alioth {
 #else
     typedef YYSTYPE semantic_type;
 #endif
-    /// Symbol locations.
-    typedef location location_type;
 
     /// Syntax errors thrown from user actions.
     struct syntax_error : std::runtime_error
     {
-      syntax_error (const location_type& l, const std::string& m)
+      syntax_error (const std::string& m)
         : std::runtime_error (m)
-        , location (l)
       {}
 
       syntax_error (const syntax_error& s)
         : std::runtime_error (s.what ())
-        , location (s.location)
       {}
 
       ~syntax_error () YY_NOEXCEPT YY_NOTHROW;
-
-      location_type location;
     };
 
     /// Token kinds.
@@ -456,26 +450,21 @@ namespace alioth {
 #endif
 
     /// Report a syntax error.
-    /// \param loc    where the syntax error is found.
     /// \param msg    a description of the syntax error.
-    virtual void error (const location_type& loc, const std::string& msg);
+    virtual void error (const std::string& msg);
 
 # if YYDEBUG
   public:
     /// \brief Report a symbol value on the debug stream.
     /// \param yykind       The symbol kind.
     /// \param yyvaluep     Its semantic value.
-    /// \param yylocationp  Its location.
     virtual void yy_symbol_value_print_ (symbol_kind_type yykind,
-                                         const semantic_type* yyvaluep,
-                                         const location_type* yylocationp) const;
+                                         const semantic_type* yyvaluep) const;
     /// \brief Report a symbol on the debug stream.
     /// \param yykind       The symbol kind.
     /// \param yyvaluep     Its semantic value.
-    /// \param yylocationp  Its location.
     virtual void yy_symbol_print_ (symbol_kind_type yykind,
-                                   const semantic_type* yyvaluep,
-                                   const location_type* yylocationp) const;
+                                   const semantic_type* yyvaluep) const;
   private:
     /// Debug stream.
     std::ostream* yycdebug_;
@@ -487,9 +476,9 @@ namespace alioth {
     alioth::doc_t& doc;
   };
 
-#line 73 "../gen/syntactic.ypp"
+#line 70 "../gen/syntactic.ypp"
 } // alioth
-#line 493 "syntactic.hpp"
+#line 482 "syntactic.hpp"
 
 
 // "%code provides" blocks.
@@ -521,7 +510,7 @@ namespace alioth {
     std::string kind_name( int i );
 }
 
-#line 525 "syntactic.hpp"
+#line 514 "syntactic.hpp"
 
 
 #endif // !YY_YY_SYNTACTIC_HPP_INCLUDED

@@ -58,7 +58,6 @@ using namespace alioth;
 %defines "syntactic.hpp"
 %output "syntactic.cpp"
 %token-table
-%locations
 
 %parse-param { alioth::Lexer& yylex }
 %parse-param { alioth::doc_t& doc }
@@ -67,8 +66,6 @@ using namespace alioth;
 
 %destructor { {if( $$ ) { node_t node = $$;} } } <>
 
-%define api.location.file "location.hpp"
-%define api.filename.type {const std::string}
 %define api.parser.class {Parser}
 %define api.namespace {alioth}
 %define api.value.type {st_node*}
@@ -108,29 +105,24 @@ doc:
         hdr->outqueue((node_t&)doc->modecl);
         for( auto import : *hdr ) doc->imports.push((import_t)import);
         for( auto stmt : *(st_nters*)$2 ) doc->body.push(stmt);
-        doc->loc = @$;
         $$ = doc; };
 
 doc.header:
     modecl { 
         auto res = new st_nters(); 
         res->push($1); 
-        res->loc = @$;
         $$ = res; }
     | doc.header import { 
         auto res = (st_nters*)$1; 
         res->push($2); 
-        res->loc = @$;
         $$ = res; };
 
 doc.body:
     %empty {
         auto res = new st_nters();
-        res->loc = @$;
         $$ = res; }
     | doc.body enum {
         ((st_nters*)$1)->push($2);
-        $1->loc = @$;
         $$ = $1; };
 enum:
     ENUM ID OPB enum.items CLB {
@@ -138,7 +130,6 @@ enum:
         res->name = $2;
         for( auto enumi : *(st_nters*)$4 )
             res->items.push((enumi_t)enumi);
-            res->loc = @$;
         $$ = res;
         kick($1, $2, $3, $4, $5);
     };
@@ -147,15 +138,12 @@ enum.items:
     enumi {
         auto res = new st_nters();
         res->push($1);
-        res->loc = @$;
         $$ = res; }
     | enum.items enumi {
         ((st_nters*)$1)->push($2);
-        $1->loc = @$;
         $$ = $1; }
     | enum.items COMMA enumi {
         ((st_nters*)$1)->push($3);
-        $1->loc = @$;
         $$ = $1;
         kick($2); };
 
@@ -163,20 +151,17 @@ enumi:
     ID {
         auto res = new st_enumi;
         res->name = $1;
-        res->loc = @$;
         $$ = res; }
     | ID ASS DECIMAL {
         auto res = new st_enumi;
         res->name = $1;
         res->value = $3;
-        res->loc = @$;
         $$ = res;
         kick($2); };
 modecl:
     MODULE ID { 
         auto res = new st_modecl; 
         res->name = $2; 
-        res->loc = @$;
         $$ = res; 
         kick($1); };
 
@@ -187,7 +172,6 @@ import:
         res->from = $5;
         for( auto dep : *deps )
             res->modules.push((modesc_t)dep); 
-            res->loc = @$;
         $$ = res; 
         kick($1, $4, $5);
         yylex.begin(SC::INITIAL); };
@@ -198,12 +182,10 @@ import.modules:
     modesc { 
         auto res = new st_nters(); 
         res->push($1); 
-        res->loc = @$;
         $$ = res; }
     | import.modules COMMA modesc { 
         auto res = (st_nters*)$1; 
         res->push($3); 
-        res->loc = @$;
         $$ = res;
         kick( $2, $3); };
 
@@ -211,14 +193,12 @@ modesc:
     ID { 
         auto res = new st_modesc; 
         res->module = $1; 
-        res->loc = @$;
         $$ = res;
         kick($1); }
     | ID AS ID { 
         auto res = new st_modesc;
         res->module = $1; 
         res->alias = $3; 
-        res->loc = @$;
         $$ = res; 
         kick($1, $2, $3); };
 /** @MARK[RULE] */
@@ -237,7 +217,7 @@ namespace alioth {
         return yysymbol_name((alioth::VN)i);
     }
 
-    void Parser::error( const location_type& loc, const std::string& msg ) {
-        std::cerr << loc << ' ' << msg << std::endl;
+    void Parser::error( const std::string& msg ) {
+        std::cerr << msg << std::endl;
     }
 }

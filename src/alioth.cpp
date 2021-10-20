@@ -1,3 +1,6 @@
+#ifndef __impl_alioth__
+#define __impl_alioth__
+
 #include "alioth.hpp"
 
 #include <fstream>
@@ -7,6 +10,7 @@
 
 #include "cli.hpp"
 #include "lexer.hpp"
+#include "source.hpp"
 #include "syntactic.hpp"
 
 #ifndef __ARCH
@@ -49,10 +53,13 @@ const std::string* Compiler::unique_source_name_ptr(const std::string& source) {
 int Compiler::compile(cli::commandline cmd) {
     try {
         if (cmd[0].size()) {
+            auto source = Source::ReadDocument(uri::from_string(cmd[0][0].args[0]));
+            if( !source ) {
+                std::cerr << "cannot open document" << std::endl;
+                return 2;
+            }
+            Lexer lexer(source);
             doc_t doc;
-            auto source = unique_source_name_ptr(cmd[0][0].args[0]);
-            auto is = std::ifstream(*source);
-            Lexer lexer(is, source);
             Parser parser(lexer, doc);
             parser();
             if (doc) {
@@ -71,3 +78,5 @@ int main(int argc, char** argv) {
     alioth::Compiler compiler;
     return compiler.execute(argc, argv);
 }
+
+#endif

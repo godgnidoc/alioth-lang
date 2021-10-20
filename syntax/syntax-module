@@ -2,7 +2,6 @@ modecl:
     MODULE ID { 
         auto res = new st_modecl; 
         res->name = $2; 
-        res->loc = @$;
         $$ = res; 
         kick($1); };
 
@@ -13,7 +12,6 @@ import:
         res->from = $5;
         for( auto dep : *deps )
             res->modules.push((modesc_t)dep); 
-            res->loc = @$;
         $$ = res; 
         kick($1, $4, $5);
         yylex.begin(SC::INITIAL); };
@@ -24,12 +22,10 @@ import.modules:
     modesc { 
         auto res = new st_nters(); 
         res->push($1); 
-        res->loc = @$;
         $$ = res; }
     | import.modules COMMA modesc { 
         auto res = (st_nters*)$1; 
         res->push($3); 
-        res->loc = @$;
         $$ = res;
         kick( $2, $3); };
 
@@ -37,13 +33,11 @@ modesc:
     ID { 
         auto res = new st_modesc; 
         res->module = $1; 
-        res->loc = @$;
         $$ = res;
         kick($1); }
     | ID AS ID { 
         auto res = new st_modesc;
         res->module = $1; 
         res->alias = $3; 
-        res->loc = @$;
         $$ = res; 
         kick($1, $2, $3); };

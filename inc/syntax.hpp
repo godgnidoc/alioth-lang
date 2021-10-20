@@ -208,6 +208,7 @@ using import_t = agent<st_import>;
 struct st_doc : public st_node {
     st_doc();
     virtual std::ostream& print(std::ostream& os, int indent = 0) const override;
+
     modecl_t modecl;           // 模块声明
     chainz<import_t> imports;  // 模块导入语句
     chainz<node_t> body;       // 声明和实现语句

@@ -56,7 +56,6 @@ using namespace alioth;
 %defines "syntactic.hpp"
 %output "syntactic.cpp"
 %token-table
-%locations
 
 %parse-param { alioth::Lexer& yylex }
 %parse-param { alioth::doc_t& doc }
@@ -65,8 +64,6 @@ using namespace alioth;
 
 %destructor { {if( $$ ) { node_t node = $$;} } } <>
 
-%define api.location.file "location.hpp"
-%define api.filename.type {const std::string}
 %define api.parser.class {Parser}
 %define api.namespace {alioth}
 %define api.value.type {st_node*}
@@ -116,7 +113,7 @@ namespace alioth {
         return yysymbol_name((alioth::VN)i);
     }
 
-    void Parser::error( const location_type& loc, const std::string& msg ) {
-        std::cerr << loc << ' ' << msg << std::endl;
+    void Parser::error( const std::string& msg ) {
+        std::cerr << msg << std::endl;
     }
 }
